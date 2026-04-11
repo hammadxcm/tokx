@@ -1,0 +1,115 @@
+---
+interface Props {
+  size?: 'sm' | 'md';
+}
+
+const { size = 'md' } = Astro.props;
+const fontSize = size === 'sm' ? '1rem' : '1.25rem';
+---
+
+<a href="/" class={`tokx-logo tokx-logo--${size}`} style={`font-size:${fontSize};`} aria-label="tokx home">
+  <span class="tokx-logo-top">tokx</span>
+  <span class="tokx-logo-bottom">tokx</span>
+  <span class="tokx-logo-slash"></span>
+</a>
+
+<style>
+  .tokx-logo {
+    position: relative;
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    height: 1.3em;
+    line-height: 1.3;
+    color: var(--color-brand);
+    text-decoration: none;
+    text-shadow: 0 0 15px color-mix(in srgb, var(--color-brand) 15%, transparent);
+  }
+
+  .tokx-logo-top,
+  .tokx-logo-bottom {
+    display: block;
+    position: relative;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+    color: inherit;
+  }
+
+  .tokx-logo-top {
+    clip-path: inset(0 0 50% 0);
+  }
+
+  .tokx-logo-bottom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    clip-path: inset(50% 0 0 0);
+    color: inherit;
+  }
+
+  .tokx-logo-slash {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -10%;
+    right: -10%;
+    margin: auto;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, white 20%, var(--color-brand-light), white 80%, transparent);
+    filter: drop-shadow(0 0 3px var(--color-brand)) drop-shadow(0 0 6px color-mix(in srgb, var(--color-brand) 50%, transparent));
+    z-index: 2;
+    pointer-events: none;
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+
+  .tokx-logo:hover .tokx-logo-slash,
+  .tokx-logo-slash.active {
+    animation: tokx-slash 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .tokx-logo:hover .tokx-logo-top,
+  .tokx-logo-top.split {
+    transform: translate(-3px, -4px);
+    color: var(--color-brand-light);
+  }
+
+  .tokx-logo:hover .tokx-logo-bottom,
+  .tokx-logo-bottom.split {
+    transform: translate(3px, 4px);
+    color: var(--color-brand-mint);
+  }
+
+  .tokx-logo:hover {
+    animation: logo-glitch 0.4s steps(3) 1;
+    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-brand) 25%, transparent));
+  }
+
+  @keyframes logo-glitch {
+    0%   { transform: translate(0, 0);     filter: hue-rotate(0deg) brightness(1); }
+    16%  { transform: translate(-2px, 1px); filter: hue-rotate(60deg) brightness(1.2); }
+    33%  { transform: translate(1px, -1px); filter: hue-rotate(-40deg) brightness(0.9); }
+    50%  { transform: translate(-1px, 0);   filter: hue-rotate(90deg) brightness(1.3); }
+    66%  { transform: translate(2px, 1px);  filter: hue-rotate(-60deg) brightness(1.1); }
+    83%  { transform: translate(-1px, -1px);filter: hue-rotate(30deg) brightness(1); }
+    100% { transform: translate(0, 0);      filter: hue-rotate(0deg) brightness(1); }
+  }
+
+  @keyframes tokx-slash {
+    0%   { clip-path: inset(0 100% 0 0); opacity: 0; }
+    5%   { opacity: 1; }
+    30%  { clip-path: inset(0 0 0 0); opacity: 1; }
+    55%  { opacity: 0.5; }
+    100% { clip-path: inset(0 0 0 0); opacity: 0; }
+  }
+
+  @media (max-width: 480px) {
+    .tokx-logo--md { font-size: 1rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tokx-logo-slash { display: none; }
+    .tokx-logo:hover .tokx-logo-top,
+    .tokx-logo:hover .tokx-logo-bottom { transform: none; }
+  }
+</style>

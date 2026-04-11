@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Version & Publish
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'chore(release):')"
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN }}
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+      - run: pnpm install --frozen-lockfile
+      - name: Version packages
+        run: pnpm changeset version
+      - run: pnpm build:core
+      - run: pnpm build:cli
+      - name: Publish to npm
+        run: pnpm release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Commit and push version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore(release): bump versions and publish" || echo "Nothing to commit"
+          git push || echo "Nothing to push"
+      - name: Create GitHub Release
+        run: |
+          VERSION=$(node -e "import('fs').then(f=>process.stdout.write(JSON.parse(f.readFileSync('./packages/cli/package.json','utf8')).version))")
+          TAG="v${VERSION}"
+          git tag "$TAG" || true
+          git push origin "$TAG" || true
+          gh release create "$TAG" --title "tokx $TAG" --generate-notes --latest || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}

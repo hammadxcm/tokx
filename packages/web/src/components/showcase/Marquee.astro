@@ -1,0 +1,119 @@
+---
+import { getIconSrc } from '../../data/languageIcons';
+
+const techs = [
+  'JavaScript',
+  'Python',
+  'Java',
+  'Go',
+  'Rust',
+  'Ruby',
+  'PHP',
+  'TypeScript',
+  'Swift',
+  'Kotlin',
+  'Elixir',
+  'Haskell',
+  'Scala',
+  'C++',
+  'Perl',
+  '.NET',
+  'Dart',
+  'Erlang',
+];
+
+const items = techs.map((name) => ({ name, icon: getIconSrc(name) }));
+---
+
+<div class="marquee reveal" aria-hidden="true">
+  <div class="marquee-track">
+    {[...items, ...items].map((tech) => (
+      <span class="marquee-item">
+          <img
+            class="marquee-icon"
+            src={tech.icon.src}
+            alt=""
+            width="28"
+            height="28"
+          />
+        {tech.name}
+      </span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    padding: 32px 0;
+    border-top: 1px solid var(--color-border-default);
+    border-bottom: 1px solid var(--color-border-default);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 56px;
+    width: max-content;
+    animation: marquee-scroll 40s linear infinite;
+    will-change: transform;
+  }
+
+  .marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  .marquee-item:hover {
+    color: var(--color-text-primary);
+    opacity: 1;
+  }
+
+  .marquee-item:hover .marquee-icon {
+    filter: none;
+    transform: scale(1.1);
+  }
+
+  .marquee-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    filter: grayscale(0.5) brightness(0.7);
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+
+  .marquee-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .marquee-item:hover .marquee-letter {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
+</style>

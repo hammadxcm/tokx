@@ -1,0 +1,73 @@
+{
+  "name": "tokx-cli",
+  "version": "0.0.1",
+  "description": "JWT decode, encode, verify from your terminal",
+  "type": "module",
+  "bin": {
+    "tokx": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/api.js",
+      "types": "./dist/api.d.ts"
+    },
+    "./cli": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@tokx/core": "workspace:*",
+    "commander": "^13.1.0",
+    "picocolors": "^1.1.1",
+    "cli-table3": "^0.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "tsup": "^8.4.0",
+    "vitest": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "main": "./dist/api.js",
+  "keywords": [
+    "jwt",
+    "json-web-token",
+    "cli",
+    "decode",
+    "encode",
+    "verify",
+    "token",
+    "jose"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hammadxcm/tokx.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://tokx.fyniti.co.uk",
+  "bugs": {
+    "url": "https://github.com/hammadxcm/tokx/issues"
+  },
+  "license": "MIT",
+  "author": "Hammad Khan",
+  "publishConfig": {
+    "access": "public"
+  }
+}

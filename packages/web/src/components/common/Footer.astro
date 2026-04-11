@@ -1,0 +1,86 @@
+---
+import { getTranslation } from '../../i18n/index';
+import Logo from '../ui/Logo.astro';
+
+const t = getTranslation('en');
+---
+<footer class="section-surface accent-border-top">
+  <div class="footer-inner section">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <Logo size="sm" />
+        <p class="footer-tagline">{t('footer.tagline')}</p>
+      </div>
+      <div class="footer-col">
+        <h4>{t('footer.quicklinks')}</h4>
+        <a href="/" class="link-hover">{t('nav.debugger')}</a>
+        <a href="/introduction" class="link-hover">{t('nav.introduction')}</a>
+        <a href="/libraries" class="link-hover">{t('nav.libraries')}</a>
+      </div>
+      <div class="footer-col">
+        <h4>{t('footer.resources')}</h4>
+        <a href="https://datatracker.ietf.org/doc/html/rfc7519" target="_blank" rel="noopener noreferrer" class="link-hover">RFC 7519</a>
+        <a href="https://datatracker.ietf.org/doc/html/rfc7515" target="_blank" rel="noopener noreferrer" class="link-hover">RFC 7515 (JWS)</a>
+        <a href="https://datatracker.ietf.org/doc/html/rfc7518" target="_blank" rel="noopener noreferrer" class="link-hover">RFC 7518 (JWA)</a>
+      </div>
+      <div class="footer-col">
+        <h4>{t('footer.connect')}</h4>
+        <a href="https://github.com/hammadxcm/tokx" target="_blank" rel="noopener noreferrer" class="footer-social link-hover">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><title>GitHub</title><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="https://www.npmjs.com/package/tokx-cli" target="_blank" rel="noopener noreferrer" class="footer-social link-hover">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><title>npm</title><path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z"/></svg>
+          npm
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; {new Date().getFullYear()} tokx. {t('footer.rights')}</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Auto-slash logo animation after 10 seconds
+  setTimeout(() => {
+    const logos = document.querySelectorAll('footer .tokx-logo');
+    for (const logo of logos) {
+      const slash = logo.querySelector('.tokx-logo-slash');
+      const top = logo.querySelector('.tokx-logo-top');
+      const bottom = logo.querySelector('.tokx-logo-bottom');
+      if (slash) slash.classList.add('active');
+      if (top) top.classList.add('split');
+      if (bottom) bottom.classList.add('split');
+      setTimeout(() => {
+        if (slash) slash.classList.remove('active');
+        if (top) top.classList.remove('split');
+        if (bottom) bottom.classList.remove('split');
+      }, 800);
+    }
+  }, 10000);
+</script>
+
+<style>
+  footer { padding-top: 2rem; }
+  .footer-inner { padding-bottom: 2rem; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; }
+  .footer-brand { max-width: 280px; }
+  .footer-tagline { color: var(--color-text-secondary); font-size: 0.85rem; margin: 0.75rem 0 0; line-height: 1.6; }
+  .footer-col { display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-col h4 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-primary); margin: 0 0 0.5rem; }
+  .footer-col a { color: var(--color-text-secondary); font-size: 0.85rem; }
+  .footer-social {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.2s ease;
+  }
+  .footer-social:hover {
+    transform: scale(1.05);
+  }
+  .footer-bottom { border-top: 1px solid var(--color-border-default); margin-top: 2rem; padding-top: 1.5rem; text-align: center; }
+  .footer-bottom p { color: var(--color-text-secondary); font-size: 0.8rem; margin: 0; }
+  @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-brand { grid-column: 1 / -1; } }
+  @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+</style>

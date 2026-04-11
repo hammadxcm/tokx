@@ -1,0 +1,59 @@
+---
+import { getTranslation } from '../../i18n/index';
+import LangSwitcher from '../ui/LangSwitcher.astro';
+import Logo from '../ui/Logo.astro';
+import ThemeSwitcher from '../ui/ThemeSwitcher.astro';
+
+const t = getTranslation('en');
+---
+<nav id="main-nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <Logo />
+    <div class="nav-links" id="nav-menu">
+      <a href="/" class="nav-link active">{t('nav.debugger')}</a>
+      <a href="/introduction" class="nav-link">{t('nav.introduction')}</a>
+      <a href="/libraries" class="nav-link">{t('nav.libraries')}</a>
+    </div>
+    <div class="nav-actions">
+      <LangSwitcher />
+      <ThemeSwitcher />
+      <a href="https://github.com/hammadxcm/tokx" target="_blank" rel="noopener noreferrer" class="nav-github focus-ring" aria-label="GitHub repository">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><title>GitHub</title><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+      <button id="nav-toggle" class="nav-hamburger" aria-expanded="false" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="/">{t('nav.debugger')}</a>
+    <a href="/introduction">{t('nav.introduction')}</a>
+    <a href="/libraries">{t('nav.libraries')}</a>
+  </div>
+</nav>
+
+<style>
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid transparent; transition: all 0.3s ease; }
+  nav.scrolled { border-bottom-color: var(--color-border-default); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 0.75rem 1.5rem; }
+  .nav-links { display: flex; gap: 0.25rem; }
+  .nav-link { position: relative; padding: 0.5rem 1rem; font-size: 0.875rem; color: var(--color-text-secondary); text-decoration: none; border-radius: var(--radius-sm); transition: color 0.2s ease; }
+  .nav-link::after { content: ''; position: absolute; bottom: 2px; left: 1rem; right: 1rem; height: 2px; background: linear-gradient(90deg, var(--color-brand), var(--color-brand-light)); transform: scaleX(0); transform-origin: right; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 1px; }
+  .nav-link:hover { color: var(--color-text-primary); }
+  .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+  .nav-link.active { color: var(--color-brand); text-shadow: 0 0 12px color-mix(in srgb, var(--color-brand) 20%, transparent); }
+  .nav-link.active::after { transform: scaleX(1); transform-origin: left; }
+  .nav-actions { display: flex; align-items: center; gap: 0.5rem; }
+  .nav-github { display: flex; align-items: center; justify-content: center; padding: 0.5rem; color: var(--color-text-secondary); border-radius: var(--radius-sm); transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); min-height: 44px; min-width: 44px; text-decoration: none; }
+  .nav-github:hover { color: var(--color-text-primary); transform: scale(1.1); background: color-mix(in srgb, var(--color-brand) 8%, transparent); }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 0.5rem; min-height: 44px; min-width: 44px; align-items: center; justify-content: center; }
+  .nav-hamburger span { display: block; width: 20px; height: 2px; background: var(--color-text-primary); transition: all 0.3s ease; border-radius: 1px; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-menu { display: none; flex-direction: column; padding: 1rem 1.5rem; background: var(--color-bg-elevated); border-top: 1px solid var(--color-border-default); }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { padding: 0.75rem 0; color: var(--color-text-secondary); text-decoration: none; font-size: 0.9rem; border-bottom: 1px solid var(--color-border-default); transition: color 0.2s ease; }
+  .mobile-menu a:hover { color: var(--color-brand); }
+  @media (max-width: 768px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
+</style>

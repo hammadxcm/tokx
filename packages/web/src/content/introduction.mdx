@@ -1,0 +1,133 @@
+## What is JSON Web Token?
+
+JSON Web Token (JWT) is an open standard ([RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519)) that defines a compact, self-contained way to securely transmit information between parties as a JSON object. This information can be verified and trusted because it is digitally signed.
+
+JWTs can be signed using a secret (with the **HMAC** algorithm) or a public/private key pair using **RSA**, **ECDSA**, or **EdDSA**.
+
+## When should you use JSON Web Tokens?
+
+**Authorization** — This is the most common scenario. Once the user is logged in, each subsequent request will include the JWT, allowing the user to access routes, services, and resources that are permitted with that token. Single Sign-On (SSO) is a feature that widely uses JWT.
+
+**Information Exchange** — JWTs are a good way to securely transmit information between parties. Because JWTs can be signed (using public/private key pairs), you can be sure the senders are who they say they are. Additionally, the signature is calculated using the header and payload, so you can verify that the content hasn't been tampered with.
+
+## What is the JSON Web Token structure?
+
+A JWT consists of three parts separated by dots (`.`), which are:
+
+- **Header**
+- **Payload**
+- **Signature**
+
+Therefore, a JWT typically looks like this:
+
+```
+xxxxx.yyyyy.zzzzz
+```
+
+### Header
+
+The header *typically* consists of two parts: the type of the token (JWT) and the signing algorithm being used, such as HMAC SHA256 or RSA.
+
+```json
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+```
+
+This JSON is then **Base64Url** encoded to form the first part of the JWT.
+
+### Payload
+
+The second part of the token is the payload, which contains the claims. Claims are statements about an entity (typically the user) and additional data. There are three types of claims:
+
+**Registered claims** — A set of predefined claims which are not mandatory but recommended:
+
+| Claim | Name | Description |
+|-------|------|-------------|
+| `iss` | Issuer | Identifies the principal that issued the JWT |
+| `sub` | Subject | Identifies the principal that is the subject |
+| `aud` | Audience | Identifies the recipients the JWT is intended for |
+| `exp` | Expiration Time | Identifies the expiration time after which the JWT must not be accepted |
+| `nbf` | Not Before | Identifies the time before which the JWT must not be accepted |
+| `iat` | Issued At | Identifies the time at which the JWT was issued |
+| `jti` | JWT ID | Provides a unique identifier for the JWT |
+
+**Public claims** — Can be defined at will by those using JWTs. But to avoid collisions they should be defined in the [IANA JSON Web Token Registry](https://www.iana.org/assignments/jwt/jwt.xhtml).
+
+**Private claims** — Custom claims created to share information between parties that agree on using them.
+
+Example payload:
+
+```json
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "admin": true,
+  "iat": 1516239022
+}
+```
+
+The payload is then **Base64Url** encoded to form the second part of the JWT.
+
+### Signature
+
+To create the signature part, you take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that.
+
+For example, using HMAC SHA256:
+
+```
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  secret
+)
+```
+
+The signature is used to verify that the message wasn't changed along the way. In the case of tokens signed with a private key, it can also verify that the sender of the JWT is who it says it is.
+
+## How do JSON Web Tokens work?
+
+In authentication, when the user successfully logs in using their credentials, a JWT will be returned. Whenever the user wants to access a protected route or resource, the user agent should send the JWT, typically in the **Authorization** header using the **Bearer** schema:
+
+```
+Authorization: Bearer <token>
+```
+
+The server's protected routes will check for a valid JWT in the `Authorization` header, and if it's present, the user will be allowed to access protected resources.
+
+The following diagram shows how a JWT is obtained and used to access APIs or resources:
+
+1. The application requests authorization to the authorization server
+2. When the authorization is granted, the authorization server returns an access token (JWT)
+3. The application uses the access token to access a protected resource (like an API)
+
+## Why should we use JSON Web Tokens?
+
+**Compact** — Because of their smaller size, JWTs can be sent through a URL, POST parameter, or inside an HTTP header. Smaller size means faster transmission.
+
+**Self-contained** — The payload contains all the required information about the user, avoiding the need to query the database more than once.
+
+**Versatile** — JWTs are used across many programming languages: .NET, Python, Node.js, Java, PHP, Ruby, Go, JavaScript, Haskell, Rust, and many more.
+
+## JWT vs. Session Cookies
+
+| Feature | JWT | Session Cookie |
+|---------|-----|----------------|
+| Storage | Client-side (token) | Server-side (session store) |
+| Scalability | Stateless — scales horizontally | Requires shared session store |
+| Cross-domain | Works across domains (CORS) | Limited to same domain |
+| Mobile | Works natively | Requires cookie support |
+| Size | Larger (contains claims) | Small (just session ID) |
+| Revocation | Difficult (until expiry) | Easy (delete from store) |
+| Performance | No DB lookup needed | Requires session lookup |
+
+## Security Best Practices
+
+- **Keep tokens short-lived** — Use short expiration times (`exp` claim) and refresh tokens for longer sessions
+- **Use HTTPS only** — Never transmit JWTs over plain HTTP
+- **Validate all claims** — Always verify `iss`, `aud`, `exp`, and `nbf` claims
+- **Use strong secrets** — For HMAC, use at least 256-bit secrets
+- **Don't store sensitive data** — JWTs are encoded, not encrypted. Anyone can decode and read the payload
+- **Use appropriate algorithms** — Prefer RS256 or ES256 for production. Avoid `none` algorithm
+- **Store tokens securely** — Use `httpOnly` cookies instead of `localStorage` to prevent XSS attacks

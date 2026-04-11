@@ -1,0 +1,128 @@
+.terminal {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: 14px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  width: 100%;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.2),
+    0 1px 4px rgba(0, 0, 0, 0.15);
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.terminal:hover {
+  box-shadow:
+    0 8px 36px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2);
+  border-color: var(--color-border-hover);
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  background: var(--color-bg-elevated);
+  border-bottom: 1px solid var(--color-border-default);
+  position: relative;
+  border-radius: 13px 13px 0 0;
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: filter 0.2s ease;
+}
+
+.terminal:hover .terminal-dot {
+  filter: brightness(1.2);
+}
+
+.terminal-dot--red {
+  background: #ff5f57;
+  box-shadow: 0 0 0 1px rgba(255, 95, 87, 0.15);
+}
+
+.terminal-dot--yellow {
+  background: #febc2e;
+  box-shadow: 0 0 0 1px rgba(254, 188, 46, 0.15);
+}
+
+.terminal-dot--green {
+  background: #28c840;
+  box-shadow: 0 0 0 1px rgba(40, 200, 64, 0.15);
+}
+
+.terminal-title {
+  flex: 1;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+}
+
+.terminal-body {
+  padding: 20px;
+  min-height: 120px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 0 13px 13px;
+}
+
+.terminal-body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border-default), transparent);
+  opacity: 0.3;
+  animation: scanline 4s linear infinite;
+  pointer-events: none;
+}
+
+.terminal-line {
+  white-space: pre;
+}
+
+.terminal-prompt {
+  color: var(--color-brand-mint);
+}
+
+.terminal-command {
+  color: var(--color-text-primary);
+}
+
+.terminal-output {
+  color: var(--color-text-secondary);
+}
+
+.terminal-success {
+  color: #28c840;
+}
+
+.terminal-warning {
+  color: #febc2e;
+}
+
+.terminal-error {
+  color: #ff5f57;
+}
+
+@media (max-width: 768px) {
+  .terminal {
+    font-size: 0.75rem;
+  }
+
+  .terminal-body {
+    padding: 16px;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+  }
+}

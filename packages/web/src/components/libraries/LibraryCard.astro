@@ -1,0 +1,307 @@
+---
+import { getIconSrc } from '../../data/languageIcons';
+import CopyButton from '../ui/CopyButton.astro';
+
+interface Props {
+  name: string;
+  language: string;
+  author: string;
+  url: string;
+  stars: number;
+  install: string;
+  signing: string[];
+  verifying: string[];
+  claims: Record<string, boolean>;
+}
+
+const { name, language, author, url, stars, install, signing, verifying, claims } = Astro.props;
+
+function formatStars(n: number): string {
+  if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
+  return String(n);
+}
+
+const LANG_COLORS: Record<string, string> = {
+  JavaScript: '#f7df1e',
+  Python: '#3776ab',
+  Java: '#ed8b00',
+  Go: '#00add8',
+  Rust: '#dea584',
+  Ruby: '#cc342d',
+  PHP: '#777bb4',
+  '.NET': '#512bd4',
+  Swift: '#f05138',
+  Kotlin: '#7f52ff',
+  Dart: '#0175c2',
+  Erlang: '#a90533',
+};
+
+const langColor = LANG_COLORS[language] || 'var(--color-brand)';
+const langIcon = getIconSrc(language);
+const claimKeys = ['iss', 'sub', 'aud', 'exp', 'nbf', 'iat', 'jti'] as const;
+const supportedClaims = claimKeys.filter((c) => claims[c]).length;
+---
+<div class="lib-card" data-language={language}>
+  <!-- Top accent line -->
+  <div class="lib-accent" style={`background: linear-gradient(90deg, ${langColor}, transparent);`}></div>
+
+  <div class="lib-body">
+    <!-- Header row -->
+    <div class="lib-header">
+      <div class="lib-info">
+        <a href={url} target="_blank" rel="noopener noreferrer" class="lib-name">
+          {name}
+          <svg class="lib-external" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><title>External link</title><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+        <span class="lib-author">by {author}</span>
+      </div>
+      <div class="lib-badges">
+        <span class="lib-lang-badge" style={`--lang-color: #${langIcon.color};`} title={language}>
+          <img
+            class={`lib-lang-icon ${langIcon.isAnimated ? 'lib-lang-icon--animated' : ''}`}
+            src={langIcon.src}
+            alt={language}
+            width="20"
+            height="20"
+          />
+        </span>
+        <span class="lib-stars">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><title>Stars</title><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          {formatStars(stars)}
+        </span>
+      </div>
+    </div>
+
+    <!-- Install command -->
+    <div class="lib-install">
+      <div class="lib-install-label">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><title>Terminal</title><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+      </div>
+      <code>{install}</code>
+      <CopyButton text={install} label={`Copy install command for ${name}`} />
+    </div>
+
+    <!-- Algorithm support -->
+    <div class="lib-section">
+      <div class="lib-section-header">
+        <span class="lib-section-label">Algorithms</span>
+        <span class="lib-section-count">{signing.length}</span>
+      </div>
+      <div class="lib-algo-grid">
+        {['HS256','HS384','HS512','RS256','RS384','RS512','ES256','ES384','ES512','PS256','PS384','PS512','EdDSA'].map((alg) => {
+          const supported = signing.includes(alg);
+          return (
+            <span class={`lib-algo-dot ${supported ? 'lib-algo-dot--yes' : 'lib-algo-dot--no'}`} title={`${alg}: ${supported ? 'Supported' : 'Not supported'}`}>
+              <span class="lib-algo-indicator"></span>
+              <span class="lib-algo-name">{alg}</span>
+            </span>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- Claims support -->
+    <div class="lib-section">
+      <div class="lib-section-header">
+        <span class="lib-section-label">Claims</span>
+        <span class="lib-section-count">{supportedClaims}/{claimKeys.length}</span>
+      </div>
+      <div class="lib-claims">
+        {claimKeys.map((c) => (
+          <span class={`lib-claim ${claims[c] ? 'lib-claim--yes' : 'lib-claim--no'}`}>
+            <span class="lib-claim-icon">{claims[c] ? '✓' : '–'}</span>
+            {c}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lib-card {
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    overflow: hidden;
+    transition: transform 0.3s var(--ease-out-expo), box-shadow 0.3s var(--ease-out-expo), border-color 0.3s ease;
+    position: relative;
+  }
+  .lib-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-border-hover);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--color-border-hover);
+  }
+
+  .lib-accent {
+    height: 3px;
+    width: 100%;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+  .lib-card:hover .lib-accent { opacity: 1; }
+
+  .lib-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .lib-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+  .lib-info { display: flex; flex-direction: column; gap: 0.2rem; }
+  .lib-name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: color 0.2s ease;
+  }
+  .lib-name:hover { color: var(--color-brand); }
+  .lib-external { opacity: 0; transition: opacity 0.2s ease, transform 0.2s ease; }
+  .lib-name:hover .lib-external { opacity: 0.6; transform: translate(1px, -1px); }
+  .lib-author { font-size: 0.75rem; color: var(--color-text-secondary); }
+
+  .lib-badges { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+  .lib-lang-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+  .lib-lang-icon:not(.lib-lang-icon--animated) {
+    filter: grayscale(0.4) brightness(0.8);
+  }
+  .lib-card:hover .lib-lang-icon {
+    filter: none;
+    transform: scale(1.1);
+  }
+  .lib-lang-initial {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 800;
+    line-height: 1;
+    transition: transform 0.3s ease;
+  }
+  .lib-card:hover .lib-lang-initial { transform: scale(1.1); }
+  .lib-lang-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--lang-color, var(--color-brand)) 8%, transparent);
+    color: var(--lang-color, var(--color-brand));
+    border: 1px solid color-mix(in srgb, var(--lang-color, var(--color-brand)) 20%, transparent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .lib-stars {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fabd2f;
+  }
+
+  .lib-install {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-bg-base);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.75rem;
+    transition: border-color 0.2s ease;
+  }
+  .lib-card:hover .lib-install { border-color: var(--color-border-hover); }
+  .lib-install-label { color: var(--color-brand-mint); flex-shrink: 0; display: flex; }
+  .lib-install code {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .lib-section { display: flex; flex-direction: column; gap: 0.4rem; }
+  .lib-section-header { display: flex; align-items: center; justify-content: space-between; }
+  .lib-section-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+  }
+  .lib-section-count {
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    color: var(--color-text-secondary);
+  }
+
+  .lib-algo-grid {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+  }
+  .lib-algo-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.6rem;
+    font-family: var(--font-mono);
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+    transition: transform 0.15s ease;
+  }
+  .lib-algo-dot:hover { transform: scale(1.08); }
+  .lib-algo-dot--yes {
+    background: rgba(40, 200, 64, 0.08);
+    color: #28c840;
+  }
+  .lib-algo-dot--no {
+    background: var(--color-bg-elevated);
+    color: var(--color-text-secondary);
+    opacity: 0.35;
+  }
+  .lib-algo-indicator {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .lib-algo-dot--yes .lib-algo-indicator { background: #28c840; box-shadow: 0 0 4px rgba(40, 200, 64, 0.4); }
+  .lib-algo-dot--no .lib-algo-indicator { background: var(--color-text-secondary); opacity: 0.3; }
+  .lib-algo-name { line-height: 1; }
+
+  .lib-claims { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+  .lib-claim {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    transition: transform 0.15s ease;
+  }
+  .lib-claim:hover { transform: scale(1.08); }
+  .lib-claim--yes {
+    background: rgba(40, 200, 64, 0.08);
+    color: #28c840;
+  }
+  .lib-claim--no {
+    background: var(--color-bg-elevated);
+    color: var(--color-text-secondary);
+    opacity: 0.4;
+  }
+  .lib-claim-icon { font-size: 0.6rem; }
+</style>

@@ -1,0 +1,58 @@
+---
+interface Props {
+  text: string;
+  label?: string;
+}
+const { text, label } = Astro.props;
+---
+<button class="copy-btn focus-ring" data-copy={text} aria-label={label || 'Copy to clipboard'}>
+  <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+  <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><polyline points="20 6 9 17 4 12"/></svg>
+</button>
+
+<style>
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0;
+  }
+  .copy-btn:hover { color: var(--color-brand); background: color-mix(in srgb, var(--color-brand) 8%, transparent); }
+  .copy-btn.copied { color: #28c840; }
+</style>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const text = btn.getAttribute('data-copy');
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        return;
+      }
+      const copyIcon = btn.querySelector('.copy-icon') as HTMLElement;
+      const checkIcon = btn.querySelector('.check-icon') as HTMLElement;
+      if (copyIcon && checkIcon) {
+        copyIcon.style.display = 'none';
+        checkIcon.style.display = 'block';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          copyIcon.style.display = 'block';
+          checkIcon.style.display = 'none';
+          btn.classList.remove('copied');
+        }, 1500);
+      }
+    });
+  });
+</script>

@@ -1,0 +1,116 @@
+---
+import Footer from '../components/common/Footer.astro';
+import Nav from '../components/common/Nav.astro';
+import { Content as IntroContent } from '../content/introduction.mdx';
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Introduction to JWT — tokx" description="Learn about JSON Web Tokens: structure, claims, how they work, and security best practices.">
+  <Nav />
+  <main id="main-content">
+    <section class="intro-hero">
+      <div class="section">
+        <div class="section-header reveal">
+          <span class="section-label">introduction</span>
+          <h1 class="section-title">Introduction to JSON Web Tokens</h1>
+          <div class="section-divider"></div>
+        </div>
+      </div>
+    </section>
+    <article class="intro-content section reveal">
+      <IntroContent />
+    </article>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .intro-hero {
+    padding-top: 120px;
+    padding-bottom: 1rem;
+  }
+  .intro-content {
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+  }
+  .intro-content :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border-default);
+  }
+  .intro-content :global(h3) {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 2rem 0 0.75rem;
+  }
+  .intro-content :global(p) {
+    margin: 0.75rem 0;
+  }
+  .intro-content :global(strong) {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  .intro-content :global(a) {
+    color: var(--color-brand);
+    text-decoration: none;
+  }
+  .intro-content :global(a:hover) {
+    text-decoration: underline;
+  }
+  .intro-content :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--color-bg-surface);
+    padding: 0.15em 0.4em;
+    border-radius: var(--radius-sm);
+    color: var(--color-brand);
+  }
+  .intro-content :global(pre) {
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 1rem 0;
+  }
+  .intro-content :global(pre code) {
+    background: none;
+    padding: 0;
+    color: var(--color-text-primary);
+  }
+  .intro-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+  }
+  .intro-content :global(th) {
+    text-align: left;
+    padding: 0.75rem;
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  .intro-content :global(td) {
+    padding: 0.75rem;
+    border: 1px solid var(--color-border-default);
+    color: var(--color-text-secondary);
+  }
+  .intro-content :global(ul),
+  .intro-content :global(ol) {
+    padding-left: 1.5rem;
+    margin: 0.75rem 0;
+  }
+  .intro-content :global(li) {
+    margin: 0.4rem 0;
+  }
+</style>

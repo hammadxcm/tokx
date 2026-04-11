@@ -1,0 +1,602 @@
+---
+import Footer from '../components/common/Footer.astro';
+import Nav from '../components/common/Nav.astro';
+import LibraryCard from '../components/libraries/LibraryCard.astro';
+import libraries from '../data/libraries.json';
+import Layout from '../layouts/Layout.astro';
+
+const languages = [...new Set(libraries.map((l) => l.language))].sort();
+const totalAlgorithms = new Set(libraries.flatMap((l) => l.signing)).size;
+---
+<Layout title="JWT Libraries — tokx" description="Browse JWT libraries across programming languages for token signing and verification.">
+  <Nav />
+  <main id="main-content">
+    <section class="libs-hero">
+      <div class="section">
+        <div class="section-header reveal">
+          <span class="section-label">libraries</span>
+          <h1 class="section-title">JWT Libraries</h1>
+          <p class="libs-subtitle">Libraries for token signing and verification</p>
+          <div class="section-divider"></div>
+        </div>
+        <!-- Stats bar -->
+        <div class="libs-stats reveal">
+          <div class="libs-stat">
+            <span class="libs-stat-value">{libraries.length}</span>
+            <span class="libs-stat-label">Libraries</span>
+          </div>
+          <div class="libs-stat-divider"></div>
+          <div class="libs-stat">
+            <span class="libs-stat-value">{languages.length}</span>
+            <span class="libs-stat-label">Languages</span>
+          </div>
+          <div class="libs-stat-divider"></div>
+          <div class="libs-stat">
+            <span class="libs-stat-value">{totalAlgorithms}</span>
+            <span class="libs-stat-label">Algorithms</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <!-- Controls -->
+      <div class="libs-controls reveal">
+        <div class="libs-search-wrap">
+          <svg class="libs-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><title>Search</title><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <input
+            type="search"
+            id="lib-search"
+            class="libs-search input-glow"
+            placeholder="Search libraries..."
+            aria-label="Search libraries"
+          />
+        </div>
+        <select id="lib-lang-filter" class="libs-filter" aria-label="Filter by language">
+          <option value="">All Languages</option>
+          {languages.map((lang) => <option value={lang}>{lang}</option>)}
+        </select>
+        <select id="lib-sort" class="libs-filter" aria-label="Sort libraries">
+          <option value="stars">★ Stars</option>
+          <option value="name">A-Z Name</option>
+        </select>
+      </div>
+
+      <!-- Language pills -->
+      <div class="libs-pills reveal" id="libs-pills">
+        <button type="button" class="libs-pill active" data-lang="">All</button>
+        {languages.map((lang) => (
+          <button type="button" class="libs-pill" data-lang={lang}>{lang}</button>
+        ))}
+      </div>
+
+      <!-- Result count -->
+      <div class="libs-count reveal">
+        Showing <span id="lib-count" class="libs-count-num">{libraries.length}</span> libraries
+      </div>
+
+      <!-- Skeleton loader (visible until JS hydrates) -->
+      <div class="libs-grid libs-skeleton" id="libs-skeleton" aria-hidden="true">
+        {Array.from({ length: 6 }).map(() => (
+          <div class="skeleton-card">
+            <div class="skeleton-row">
+              <div class="skeleton-line skeleton-line--title"></div>
+              <div class="skeleton-circle"></div>
+            </div>
+            <div class="skeleton-line skeleton-line--subtitle"></div>
+            <div class="skeleton-line skeleton-line--install"></div>
+            <div class="skeleton-row skeleton-row--chips">
+              <div class="skeleton-chip"></div>
+              <div class="skeleton-chip"></div>
+              <div class="skeleton-chip"></div>
+              <div class="skeleton-chip"></div>
+              <div class="skeleton-chip"></div>
+            </div>
+            <div class="skeleton-row skeleton-row--chips">
+              <div class="skeleton-chip skeleton-chip--sm"></div>
+              <div class="skeleton-chip skeleton-chip--sm"></div>
+              <div class="skeleton-chip skeleton-chip--sm"></div>
+              <div class="skeleton-chip skeleton-chip--sm"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Real grid (hidden until loaded) -->
+      <div class="libs-grid stagger" id="libs-grid" style="display:none;">
+        {libraries
+          .sort((a, b) => b.stars - a.stars)
+          .map((lib) => (
+            <div class="lib-wrapper reveal" data-name={lib.name.toLowerCase()} data-language={lib.language} data-stars={lib.stars}>
+              <LibraryCard {...lib} />
+            </div>
+          ))}
+      </div>
+
+      <p id="libs-empty" class="libs-empty" style="display:none;">No libraries match your filters.</p>
+
+      <!-- Pagination -->
+      <div class="libs-pagination" id="libs-pagination">
+        <button type="button" id="page-prev" class="page-btn" aria-label="Previous page" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><title>Previous</title><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="page-numbers" id="page-numbers"></div>
+        <button type="button" id="page-next" class="page-btn" aria-label="Next page">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><title>Next</title><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <div class="libs-per-page">
+        <span>Show</span>
+        <select id="per-page" class="libs-filter" aria-label="Items per page">
+          <option value="9">9</option>
+          <option value="18" selected>18</option>
+          <option value="36">36</option>
+          <option value="0">All</option>
+        </select>
+        <span>per page</span>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  const search = document.getElementById('lib-search') as HTMLInputElement;
+  const langFilter = document.getElementById('lib-lang-filter') as HTMLSelectElement;
+  const sortSelect = document.getElementById('lib-sort') as HTMLSelectElement;
+  const perPageSelect = document.getElementById('per-page') as HTMLSelectElement;
+  const grid = document.getElementById('libs-grid') as HTMLElement;
+  const countEl = document.getElementById('lib-count') as HTMLElement;
+  const emptyEl = document.getElementById('libs-empty') as HTMLElement;
+  const paginationEl = document.getElementById('libs-pagination') as HTMLElement;
+  const pageNumbersEl = document.getElementById('page-numbers') as HTMLElement;
+  const prevBtn = document.getElementById('page-prev') as HTMLButtonElement;
+  const nextBtn = document.getElementById('page-next') as HTMLButtonElement;
+  const pills = document.querySelectorAll('.libs-pill');
+
+  let currentPage = 1;
+  let perPage = 18;
+
+  // Read URL params on load
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('lang')) {
+    langFilter.value = params.get('lang') || '';
+    syncPills(langFilter.value);
+  }
+  if (params.get('q')) search.value = params.get('q') || '';
+  if (params.get('sort')) sortSelect.value = params.get('sort') || 'stars';
+  if (params.get('page')) currentPage = Number(params.get('page')) || 1;
+  if (params.get('per')) { perPage = Number(params.get('per')) || 18; perPageSelect.value = String(perPage); }
+
+  function syncPills(lang: string) {
+    for (const p of pills) {
+      p.classList.toggle('active', (p as HTMLElement).dataset.lang === lang);
+    }
+  }
+
+  function updateURL() {
+    const p = new URLSearchParams();
+    if (langFilter.value) p.set('lang', langFilter.value);
+    if (search.value) p.set('q', search.value);
+    if (sortSelect.value !== 'stars') p.set('sort', sortSelect.value);
+    if (currentPage > 1) p.set('page', String(currentPage));
+    if (perPage !== 18) p.set('per', String(perPage));
+    const qs = p.toString();
+    const url = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+    window.history.replaceState(null, '', url);
+  }
+
+  function getFilteredItems(): HTMLElement[] {
+    const q = search.value.toLowerCase();
+    const lang = langFilter.value;
+    const items = Array.from(grid.children) as HTMLElement[];
+    return items.filter((item) => {
+      const name = item.dataset.name || '';
+      const itemLang = item.dataset.language || '';
+      const matchesSearch = !q || name.includes(q) || itemLang.toLowerCase().includes(q);
+      const matchesLang = !lang || itemLang === lang;
+      return matchesSearch && matchesLang;
+    });
+  }
+
+  function renderPagination(totalFiltered: number) {
+    const totalPages = perPage === 0 ? 1 : Math.max(1, Math.ceil(totalFiltered / perPage));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    prevBtn.disabled = currentPage <= 1;
+    nextBtn.disabled = currentPage >= totalPages;
+
+    pageNumbersEl.innerHTML = '';
+    const maxVisible = 5;
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    const end = Math.min(totalPages, start + maxVisible - 1);
+    if (end - start + 1 < maxVisible) start = Math.max(1, end - maxVisible + 1);
+
+    if (start > 1) {
+      addPageBtn(1);
+      if (start > 2) addEllipsis();
+    }
+
+    for (let i = start; i <= end; i++) addPageBtn(i);
+
+    if (end < totalPages) {
+      if (end < totalPages - 1) addEllipsis();
+      addPageBtn(totalPages);
+    }
+
+    paginationEl.style.display = totalPages <= 1 ? 'none' : 'flex';
+  }
+
+  function addPageBtn(page: number) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `page-num ${page === currentPage ? 'page-num--active' : ''}`;
+    btn.textContent = String(page);
+    btn.setAttribute('aria-label', `Page ${page}`);
+    if (page === currentPage) btn.setAttribute('aria-current', 'page');
+    btn.addEventListener('click', () => { currentPage = page; applyAll(); scrollToGrid(); });
+    pageNumbersEl.appendChild(btn);
+  }
+
+  function addEllipsis() {
+    const span = document.createElement('span');
+    span.className = 'page-ellipsis';
+    span.textContent = '...';
+    pageNumbersEl.appendChild(span);
+  }
+
+  function scrollToGrid() {
+    grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function sortItems(items: HTMLElement[]): HTMLElement[] {
+    const sortBy = sortSelect.value;
+    return items.sort((a, b) => {
+      if (sortBy === 'stars') return Number(b.dataset.stars) - Number(a.dataset.stars);
+      return (a.dataset.name || '').localeCompare(b.dataset.name || '');
+    });
+  }
+
+  function applyAll() {
+    const allItems = Array.from(grid.children) as HTMLElement[];
+    const filtered = getFilteredItems();
+    const sorted = sortItems([...filtered]);
+    const total = sorted.length;
+
+    // Re-order DOM
+    for (const item of sorted) grid.appendChild(item);
+
+    // Apply pagination
+    const startIdx = perPage === 0 ? 0 : (currentPage - 1) * perPage;
+    const endIdx = perPage === 0 ? total : startIdx + perPage;
+    const paged = new Set(sorted.slice(startIdx, endIdx));
+
+    for (const item of allItems) {
+      if (paged.has(item)) {
+        item.style.display = '';
+      } else if (filtered.includes(item)) {
+        item.style.display = 'none'; // filtered but not on this page
+      } else {
+        item.style.display = 'none'; // filtered out
+      }
+    }
+
+    countEl.textContent = String(total);
+    emptyEl.style.display = total === 0 ? 'block' : 'none';
+    renderPagination(total);
+    updateURL();
+  }
+
+  // Event listeners
+  for (const pill of pills) {
+    pill.addEventListener('click', () => {
+      const lang = (pill as HTMLElement).dataset.lang || '';
+      langFilter.value = lang;
+      syncPills(lang);
+      currentPage = 1;
+      applyAll();
+    });
+  }
+
+  search.addEventListener('input', () => { currentPage = 1; applyAll(); });
+  langFilter.addEventListener('change', () => { syncPills(langFilter.value); currentPage = 1; applyAll(); });
+  sortSelect.addEventListener('change', () => { currentPage = 1; applyAll(); });
+  perPageSelect.addEventListener('change', () => { perPage = Number(perPageSelect.value); currentPage = 1; applyAll(); });
+  prevBtn.addEventListener('click', () => { if (currentPage > 1) { currentPage--; applyAll(); scrollToGrid(); } });
+  nextBtn.addEventListener('click', () => { currentPage++; applyAll(); scrollToGrid(); });
+
+  // Swap skeleton for real grid
+  const skeleton = document.getElementById('libs-skeleton');
+  if (skeleton) skeleton.remove();
+  grid.style.display = '';
+
+  // Initial render
+  applyAll();
+</script>
+
+<style>
+  .libs-hero { padding-top: 120px; padding-bottom: 0; }
+  .libs-subtitle { color: var(--color-text-secondary); margin-top: 0.75rem; font-size: 1rem; }
+
+  /* Stats bar */
+  .libs-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding: 1.25rem 2rem;
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+  }
+  .libs-stat { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+  .libs-stat-value { font-size: 1.75rem; font-weight: 800; color: var(--color-brand); font-family: var(--font-mono); }
+  .libs-stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); font-weight: 600; }
+  .libs-stat-divider { width: 1px; height: 40px; background: var(--color-border-default); }
+
+  /* Controls */
+  .libs-controls { display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .libs-search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+  }
+  .libs-search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-secondary);
+    pointer-events: none;
+  }
+  .libs-search {
+    width: 100%;
+    padding: 0.65rem 1rem 0.65rem 2.25rem;
+    font-size: 0.875rem;
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+  }
+  .libs-filter {
+    padding: 0.65rem 1rem;
+    font-size: 0.8rem;
+    background: var(--color-bg-surface);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-family: var(--font-body);
+  }
+
+  /* Language pills */
+  .libs-pills {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+  .libs-pill {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid var(--color-border-default);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-body);
+  }
+  .libs-pill:hover {
+    border-color: var(--color-border-hover);
+    color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--color-brand) 5%, transparent);
+  }
+  .libs-pill.active {
+    background: var(--color-brand);
+    color: #fff;
+    border-color: var(--color-brand);
+    font-weight: 600;
+  }
+
+  /* Count */
+  .libs-count { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 1rem; }
+  .libs-count-num { font-weight: 700; color: var(--color-brand); font-family: var(--font-mono); }
+
+  /* Grid */
+  .libs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.25rem;
+  }
+  .libs-empty {
+    text-align: center;
+    color: var(--color-text-secondary);
+    padding: 3rem 0;
+    font-size: 0.9rem;
+  }
+
+  /* Pagination */
+  .libs-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    margin-top: 2rem;
+    padding: 1rem 0;
+  }
+  .page-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-body);
+  }
+  .page-btn:hover:not(:disabled) {
+    border-color: var(--color-brand);
+    color: var(--color-brand);
+    background: color-mix(in srgb, var(--color-brand) 5%, transparent);
+  }
+  .page-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  .page-numbers {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .page-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 0.5rem;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-mono);
+  }
+  .page-num:hover {
+    border-color: var(--color-brand);
+    color: var(--color-brand);
+  }
+  .page-num--active {
+    background: var(--color-brand);
+    color: #fff;
+    border-color: var(--color-brand);
+    font-weight: 700;
+  }
+  .page-num--active:hover {
+    color: #fff;
+  }
+  .page-ellipsis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 40px;
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+  }
+
+  /* Per page selector */
+  .libs-per-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+  }
+  .libs-per-page select {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.75rem;
+    min-width: 50px;
+  }
+
+  /* Skeleton loader */
+  .libs-skeleton {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.25rem;
+  }
+  .skeleton-card {
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-default);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    overflow: hidden;
+  }
+  .skeleton-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .skeleton-row--chips {
+    justify-content: flex-start;
+    gap: 0.3rem;
+  }
+  .skeleton-line {
+    height: 14px;
+    border-radius: 6px;
+    background: var(--color-bg-elevated);
+    position: relative;
+    overflow: hidden;
+  }
+  .skeleton-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-border-default) 40%, transparent) 50%, transparent 100%);
+    animation: shimmer 1.5s ease-in-out infinite;
+    background-size: 200% 100%;
+  }
+  .skeleton-line--title { width: 55%; }
+  .skeleton-line--subtitle { width: 30%; height: 10px; }
+  .skeleton-line--install { width: 100%; height: 38px; border-radius: var(--radius-md); }
+  .skeleton-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--color-bg-elevated);
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .skeleton-circle::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-border-default) 40%, transparent) 50%, transparent 100%);
+    animation: shimmer 1.5s ease-in-out infinite;
+    background-size: 200% 100%;
+  }
+  .skeleton-chip {
+    width: 48px;
+    height: 18px;
+    border-radius: 4px;
+    background: var(--color-bg-elevated);
+    position: relative;
+    overflow: hidden;
+  }
+  .skeleton-chip--sm { width: 32px; }
+  .skeleton-chip::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--color-border-default) 40%, transparent) 50%, transparent 100%);
+    animation: shimmer 1.5s ease-in-out infinite;
+    background-size: 200% 100%;
+  }
+
+  @media (max-width: 640px) {
+    .libs-grid, .libs-skeleton { grid-template-columns: 1fr; }
+    .libs-controls { flex-direction: column; }
+    .libs-stats { flex-direction: column; gap: 1rem; padding: 1rem; }
+    .libs-stat-divider { width: 40px; height: 1px; }
+    .page-btn, .page-num { width: 36px; height: 36px; min-width: 36px; }
+  }
+</style>

@@ -1,0 +1,236 @@
+---
+import { getTranslation } from '../../i18n/index';
+
+const t = getTranslation('en');
+---
+<section class="hero" id="hero">
+  <div class="ambient-orb" style="width:400px;height:400px;background:rgba(251,1,91,0.08);top:-100px;left:-100px;"></div>
+  <div class="ambient-orb" style="width:350px;height:350px;background:rgba(214,58,255,0.06);top:50%;right:-80px;"></div>
+  <div class="ambient-orb" style="width:300px;height:300px;background:rgba(0,185,241,0.05);bottom:-50px;left:40%;"></div>
+
+  <!-- Floating labels -->
+  <span class="hero-float-label" style="top:18%;left:8%;--float-delay:0s;">/decode</span>
+  <span class="hero-float-label" style="top:25%;right:10%;--float-delay:2s;">/verify</span>
+  <span class="hero-float-label" style="bottom:30%;left:5%;--float-delay:4s;">/sign</span>
+
+  <div class="hero-content section">
+    <div class="hero-badge reveal">
+      <span>{t('hero.badge')}</span>
+    </div>
+    <h1 class="hero-title reveal">
+      {t('hero.title')}
+      <br />
+      <span class="hero-rotating-word gradient-text-animate" id="hero-word">{t('hero.titleAccent')}</span>
+    </h1>
+    <p class="hero-description reveal">{t('hero.description')}</p>
+    <div class="hero-actions reveal">
+      <a href="#debugger" class="btn btn-primary">{t('hero.cta')}</a>
+      <a href="https://github.com/hammadxcm/tokx" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><title>GitHub</title><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        {t('hero.github')}
+      </a>
+    </div>
+    <div class="scroll-indicator reveal">
+      <span style="font-size:0.7rem;color:var(--color-text-secondary);">Scroll</span>
+      <div class="scroll-indicator-dot"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const GLITCH_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*<>{}[]=/\\|~';
+  const WORDS = ['decoded.', 'verified.', 'signed.', 'secured.', 'inspected.'];
+  const SCRAMBLE_MS = 35;
+  const RESOLVE_MS = 50;
+  const CYCLE_MS = 3500;
+
+  function scrambleTo(el: HTMLElement, target: string): void {
+    const len = Math.max(el.textContent?.length || 0, target.length);
+    const resolved = new Array(len).fill(false);
+    const chars = new Array(len).fill('');
+
+    // Shuffle resolve order
+    const order = Array.from({ length: len }, (_, i) => i);
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+
+    // Apply glitch class for CSS displacement
+    el.classList.add('glitching');
+
+    // Flicker phase: random characters
+    const flickerTimer = setInterval(() => {
+      for (let i = 0; i < len; i++) {
+        if (!resolved[i]) {
+          chars[i] = GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
+        }
+      }
+      el.textContent = chars.join('');
+    }, SCRAMBLE_MS);
+
+    // Resolve phase: lock in correct characters one by one
+    let step = 0;
+    const resolveTimer = setInterval(() => {
+      if (step < order.length) {
+        const idx = order[step];
+        resolved[idx] = true;
+        chars[idx] = idx < target.length ? target[idx] : '';
+        step++;
+      } else {
+        clearInterval(flickerTimer);
+        clearInterval(resolveTimer);
+        el.textContent = target;
+        el.classList.remove('glitching');
+      }
+    }, RESOLVE_MS);
+  }
+
+  const el = document.getElementById('hero-word');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (el) {
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % WORDS.length;
+      if (reducedMotion) {
+        el.textContent = WORDS[i];
+      } else {
+        scrambleTo(el, WORDS[i]);
+      }
+    }, CYCLE_MS);
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: 80px;
+  }
+  .hero-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-badge {
+    display: inline-flex;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: color-mix(in srgb, var(--color-brand) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-brand) 15%, transparent);
+    letter-spacing: 0.05em;
+  }
+  .hero-title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+  .hero-rotating-word {
+    display: inline-block;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    position: relative;
+  }
+  .hero-rotating-word.glitching {
+    animation: word-glitch 0.4s steps(3) 1;
+  }
+  .hero-rotating-word.glitching::before,
+  .hero-rotating-word.glitching::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .hero-rotating-word.glitching::before {
+    color: var(--jwt-header);
+    animation: glitch-shift-1 0.3s steps(2) infinite;
+    clip-path: inset(0 0 60% 0);
+    opacity: 0.7;
+  }
+  .hero-rotating-word.glitching::after {
+    color: var(--jwt-signature);
+    animation: glitch-shift-2 0.3s steps(2) infinite reverse;
+    clip-path: inset(60% 0 0 0);
+    opacity: 0.7;
+  }
+  @keyframes word-glitch {
+    0%   { transform: translate(0, 0);     filter: hue-rotate(0deg) brightness(1); }
+    16%  { transform: translate(-2px, 1px); filter: hue-rotate(60deg) brightness(1.2); }
+    33%  { transform: translate(2px, -1px); filter: hue-rotate(-40deg) brightness(0.9); }
+    50%  { transform: translate(-1px, 0);   filter: hue-rotate(90deg) brightness(1.3); }
+    66%  { transform: translate(2px, 1px);  filter: hue-rotate(-60deg) brightness(1.1); }
+    83%  { transform: translate(-1px, -1px);filter: hue-rotate(30deg) brightness(1); }
+    100% { transform: translate(0, 0);      filter: hue-rotate(0deg) brightness(1); }
+  }
+  @keyframes glitch-shift-1 {
+    0%   { transform: translate(-2px, -1px); }
+    50%  { transform: translate(2px, 1px); }
+    100% { transform: translate(-1px, 0); }
+  }
+  @keyframes glitch-shift-2 {
+    0%   { transform: translate(2px, 1px); }
+    50%  { transform: translate(-2px, -1px); }
+    100% { transform: translate(1px, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-rotating-word.glitching { animation: none; }
+    .hero-rotating-word.glitching::before,
+    .hero-rotating-word.glitching::after { display: none; }
+  }
+  .hero-description {
+    max-width: 540px;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Floating labels */
+  .hero-float-label {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    opacity: 0.25;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-sm);
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--color-border-default);
+    animation: float 8s ease-in-out infinite;
+    animation-delay: var(--float-delay, 0s);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @media (max-width: 640px) {
+    .hero { min-height: 80vh; padding-top: 60px; }
+    .hero-description { font-size: 0.95rem; }
+    .hero-actions { flex-direction: column; width: 100%; }
+    .hero-actions .btn { width: 100%; justify-content: center; }
+    .hero-float-label { display: none; }
+  }
+</style>

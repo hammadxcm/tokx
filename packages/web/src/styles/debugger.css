@@ -1,0 +1,222 @@
+/* ══════════════════════════════════════════
+   JWT Debugger — Two-panel layout
+   ══════════════════════════════════════════ */
+
+.debugger-section {
+  padding: 2rem 1.5rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.debugger-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-height: 500px;
+  background: var(--color-bg-surface);
+}
+
+/* ── Encoded panel (left) ── */
+.debugger-encoded {
+  background: var(--color-bg-surface);
+  padding: 1.5rem;
+  border-right: 1px solid var(--color-border-default);
+  display: flex;
+  flex-direction: column;
+}
+
+.debugger-encoded-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.debugger-token-input {
+  flex: 1;
+  width: 100%;
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  resize: none;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.debugger-token-input:focus {
+  outline: none;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px rgba(251, 1, 91, 0.1);
+}
+
+/* ── Decoded panel (right) ── */
+.debugger-decoded {
+  background: var(--color-bg-base);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.debugger-section-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.5rem;
+}
+
+.debugger-section-label--header {
+  color: var(--jwt-header);
+}
+
+.debugger-section-label--payload {
+  color: var(--jwt-payload);
+}
+
+.debugger-section-label--verify {
+  color: var(--jwt-signature);
+}
+
+/* ── JSON editors ── */
+.debugger-json {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  resize: vertical;
+  width: 100%;
+  min-height: 80px;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.debugger-json:focus {
+  outline: none;
+  border-color: var(--color-brand-light);
+  box-shadow: 0 0 0 3px rgba(214, 58, 255, 0.1);
+}
+
+.debugger-json--header {
+  border-left: 3px solid var(--jwt-header);
+}
+
+.debugger-json--payload {
+  border-left: 3px solid var(--jwt-payload);
+}
+
+/* ── JWT color coding ── */
+.jwt-header {
+  color: var(--jwt-header);
+}
+.jwt-payload {
+  color: var(--jwt-payload);
+}
+.jwt-signature {
+  color: var(--jwt-signature);
+}
+.jwt-dot {
+  color: var(--color-text-secondary);
+}
+
+/* ── Algorithm selector ── */
+.debugger-algo-select {
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+  min-height: 36px;
+  transition: border-color 0.2s ease;
+}
+
+.debugger-algo-select:focus {
+  outline: none;
+  border-color: var(--color-brand);
+}
+
+/* ── Secret input ── */
+.debugger-secret-input {
+  width: 100%;
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  border-left: 3px solid var(--jwt-signature);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.debugger-secret-input:focus {
+  outline: none;
+  border-color: var(--jwt-signature);
+  box-shadow: 0 0 0 3px rgba(0, 185, 241, 0.1);
+}
+
+/* ── Verification badges ── */
+.verify-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  animation: scale-in-center 0.3s var(--ease-out-expo);
+}
+
+.verify-valid {
+  background: rgba(40, 200, 64, 0.1);
+  color: #28c840;
+  border: 1px solid rgba(40, 200, 64, 0.3);
+}
+
+.verify-invalid {
+  background: rgba(255, 95, 87, 0.1);
+  color: #ff5f57;
+  border: 1px solid rgba(255, 95, 87, 0.3);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .debugger-container {
+    grid-template-columns: 1fr;
+  }
+
+  .debugger-encoded {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border-default);
+  }
+
+  .debugger-section {
+    padding: 1rem;
+  }
+}

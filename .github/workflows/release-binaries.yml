@@ -1,0 +1,62 @@
+name: Release Binaries
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - target: linux-x64
+            os: ubuntu-latest
+            bun_target: bun-linux-x64
+          - target: linux-arm64
+            os: ubuntu-latest
+            bun_target: bun-linux-arm64
+          - target: darwin-x64
+            os: macos-latest
+            bun_target: bun-darwin-x64
+          - target: darwin-arm64
+            os: macos-latest
+            bun_target: bun-darwin-arm64
+          - target: win-x64
+            os: windows-latest
+            bun_target: bun-windows-x64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:core
+      - run: pnpm build:cli
+
+      - name: Compile standalone binary
+        run: bun build packages/cli/dist/index.js --compile --target=${{ matrix.bun_target }} --outfile tokx
+
+      - name: Package (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          chmod +x tokx
+          tar czf tokx-${{ matrix.target }}.tar.gz tokx
+          shasum -a 256 tokx-${{ matrix.target }}.tar.gz > tokx-${{ matrix.target }}.tar.gz.sha256
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path tokx.exe -DestinationPath tokx-${{ matrix.target }}.zip
+          (Get-FileHash tokx-${{ matrix.target }}.zip -Algorithm SHA256).Hash | Out-File tokx-${{ matrix.target }}.zip.sha256
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            tokx-${{ matrix.target }}.*

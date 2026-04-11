@@ -1,0 +1,53 @@
+{
+  "name": "tokx-monorepo",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@10.8.0",
+  "scripts": {
+    "build": "pnpm --filter './packages/*' run build",
+    "build:core": "pnpm --filter @tokx/core run build",
+    "build:cli": "pnpm --filter tokx-cli run build",
+    "build:web": "pnpm --filter @tokx/web run build",
+    "dev:web": "pnpm --filter @tokx/web run dev",
+    "test": "pnpm --filter './packages/*' run test",
+    "test:coverage": "pnpm --filter './packages/*' run test:coverage",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "typecheck": "pnpm --filter './packages/*' run typecheck",
+    "clean": "pnpm --filter './packages/*' run clean",
+    "changeset": "changeset",
+    "release": "changeset publish",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
+    "@changesets/cli": "^2.27.0",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@vitest/coverage-v8": "^3.1.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
+    "typescript": "^5.8.3"
+  },
+  "lint-staged": {
+    "*": [
+      "biome check --write --no-errors-on-unmatched"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hammadxcm/tokx.git"
+  },
+  "homepage": "https://github.com/hammadxcm/tokx#readme",
+  "author": "Hammad Khan",
+  "license": "MIT",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

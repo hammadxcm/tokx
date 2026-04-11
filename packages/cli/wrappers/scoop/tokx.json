@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "description": "JWT decode, encode, verify from your terminal",
+  "homepage": "https://github.com/hammadxcm/tokx",
+  "license": "MIT",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/hammadxcm/tokx/releases/download/v0.0.1/tokx-win-x64.zip",
+      "hash": "PLACEHOLDER_SHA256"
+    }
+  },
+  "bin": "tokx.exe",
+  "checkver": {
+    "github": "https://github.com/hammadxcm/tokx"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/hammadxcm/tokx/releases/download/v$version/tokx-win-x64.zip"
+      }
+    }
+  }
+}

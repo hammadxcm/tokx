@@ -1,0 +1,28 @@
+[package]
+name = "tokx-bin"
+version = "0.0.1"
+edition = "2021"
+description = "JWT decode, encode, verify from your terminal"
+license = "MIT"
+repository = "https://github.com/hammadxcm/tokx"
+homepage = "https://github.com/hammadxcm/tokx"
+readme = "README.md"
+keywords = ["jwt", "json-web-token", "decode", "encode", "verify"]
+categories = ["command-line-utilities", "authentication"]
+
+# This is a binary-only crate distributed via cargo-binstall.
+# No Rust source code — binaries are downloaded from GitHub Releases.
+
+[package.metadata.binstall]
+pkg-url = "{ repo }/releases/download/v{ version }/tokx-{ target }.tar.gz"
+bin-dir = "tokx-{ target }/{ bin }{ binary-ext }"
+pkg-fmt = "tgz"
+
+[package.metadata.binstall.overrides]
+# Map Rust targets to our release artifact names
+"x86_64-unknown-linux-gnu" = { pkg-url = "{ repo }/releases/download/v{ version }/tokx-linux-x64.tar.gz" }
+"x86_64-unknown-linux-musl" = { pkg-url = "{ repo }/releases/download/v{ version }/tokx-linux-x64.tar.gz" }
+"aarch64-unknown-linux-gnu" = { pkg-url = "{ repo }/releases/download/v{ version }/tokx-linux-arm64.tar.gz" }
+"x86_64-apple-darwin" = { pkg-url = "{ repo }/releases/download/v{ version }/tokx-darwin-x64.tar.gz" }
+"aarch64-apple-darwin" = { pkg-url = "{ repo }/releases/download/v{ version }/tokx-darwin-arm64.tar.gz" }
+"x86_64-pc-windows-msvc" = { pkg-url = "{ repo }/releases/download/v{ version }/tokx-win-x64.zip", pkg-fmt = "zip" }

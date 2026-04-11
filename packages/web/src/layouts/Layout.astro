@@ -1,0 +1,65 @@
+---
+import '../styles/global.css';
+import '../styles/themes.css';
+import '../styles/animations.css';
+import '../styles/terminal.css';
+import '../styles/debugger.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  locale?: string;
+}
+
+const {
+  title,
+  description = 'Decode, verify, and generate JSON Web Tokens entirely in your browser.',
+  locale = 'en',
+} = Astro.props;
+const dir = ['ar', 'ur'].includes(locale) ? 'rtl' : 'ltr';
+---
+<html lang={locale} dir={dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0b0f14" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self';" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={`https://tokx.fyniti.co.uk${Astro.url.pathname}`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={`https://tokx.fyniti.co.uk${Astro.url.pathname}`} />
+    <meta property="og:site_name" content="tokx" />
+    <meta property="og:image" content="https://tokx.fyniti.co.uk/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://tokx.fyniti.co.uk/og-image.png" />
+    <title>{title}</title>
+    {/* Theme flash prevention */}
+    <script is:inline>
+      (function(){var t=localStorage.getItem('tokx-theme');if(t&&t!=='dark')document.documentElement.setAttribute('data-theme',t);})();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <div id="scroll-progress" aria-hidden="true"></div>
+    <canvas id="hero-canvas" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+    <div style="position:relative;z-index:1;">
+      <slot />
+    </div>
+    <script>
+      import { initParticleCanvas } from '../scripts/canvas';
+      import { initNav } from '../scripts/nav';
+      import { initScrollReveal } from '../scripts/observer';
+      import { initSmoothScroll } from '../scripts/smooth-scroll';
+      import { initThemeSwitcher } from '../scripts/theme-switcher';
+
+      initParticleCanvas('hero-canvas');
+      initThemeSwitcher();
+      initNav();
+      initScrollReveal();
+      initSmoothScroll();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+{
+  "name": "@tokx/core",
+  "version": "0.0.1",
+  "description": "JWT decode, encode, and verify utilities wrapping jose",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "jose": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "tsup": "^8.4.0",
+    "vitest": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "jwt",
+    "json-web-token",
+    "decode",
+    "encode",
+    "verify",
+    "jose",
+    "token"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hammadxcm/tokx.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://tokx.fyniti.co.uk",
+  "bugs": {
+    "url": "https://github.com/hammadxcm/tokx/issues"
+  },
+  "license": "MIT",
+  "author": "Hammad Khan",
+  "publishConfig": {
+    "access": "public"
+  }
+}

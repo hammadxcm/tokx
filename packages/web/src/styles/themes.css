@@ -1,0 +1,303 @@
+/* ══════════════════════════════════════════
+   tokx — 15 Theme System
+   Default (JWT Dark) is in global.css :root
+   JWT colors mapped: brand=header, brand-light=payload, brand-mint=signature
+   ══════════════════════════════════════════ */
+
+/* ── LIGHT ── */
+[data-theme="light"] {
+  --color-brand: #d4004a;
+  --color-brand-light: #b030d0;
+  --color-brand-mint: #0090c0;
+  --color-bg-base: #f8f9fa;
+  --color-bg-surface: #eef0f2;
+  --color-bg-elevated: #e1e5e9;
+  --color-text-primary: #1a1a2e;
+  --color-text-secondary: #5a6270;
+  --color-text-accent: #d4004a;
+  --color-border-default: rgba(212, 0, 74, 0.15);
+  --color-border-hover: rgba(212, 0, 74, 0.3);
+  --glass-bg: rgba(238, 240, 242, 0.75);
+}
+
+/* ── DRACULA ── */
+[data-theme="dracula"] {
+  --color-brand: #ff79c6;
+  --color-brand-light: #bd93f9;
+  --color-brand-mint: #8be9fd;
+  --color-bg-base: #282a36;
+  --color-bg-surface: #343746;
+  --color-bg-elevated: #44475a;
+  --color-text-primary: #f8f8f2;
+  --color-text-secondary: #6272a4;
+  --color-text-accent: #50fa7b;
+  --color-border-default: rgba(255, 121, 198, 0.15);
+  --color-border-hover: rgba(255, 121, 198, 0.3);
+  --glass-bg: rgba(40, 42, 54, 0.6);
+}
+
+/* ── NORD ── */
+[data-theme="nord"] {
+  --color-brand: #bf616a;
+  --color-brand-light: #b48ead;
+  --color-brand-mint: #88c0d0;
+  --color-bg-base: #2e3440;
+  --color-bg-surface: #3b4252;
+  --color-bg-elevated: #434c5e;
+  --color-text-primary: #eceff4;
+  --color-text-secondary: #7b88a1;
+  --color-text-accent: #88c0d0;
+  --color-border-default: rgba(191, 97, 106, 0.15);
+  --color-border-hover: rgba(191, 97, 106, 0.3);
+  --glass-bg: rgba(46, 52, 64, 0.6);
+}
+
+/* ── CATPPUCCIN ── */
+[data-theme="catppuccin"] {
+  --color-brand: #f38ba8;
+  --color-brand-light: #cba6f7;
+  --color-brand-mint: #89b4fa;
+  --color-bg-base: #1e1e2e;
+  --color-bg-surface: #2a2a3c;
+  --color-bg-elevated: #313244;
+  --color-text-primary: #cdd6f4;
+  --color-text-secondary: #888da5;
+  --color-text-accent: #89b4fa;
+  --color-border-default: rgba(243, 139, 168, 0.15);
+  --color-border-hover: rgba(243, 139, 168, 0.3);
+  --glass-bg: rgba(30, 30, 46, 0.6);
+}
+
+/* ── SYNTHWAVE ── */
+[data-theme="synthwave"] {
+  --color-brand: #ff2e97;
+  --color-brand-light: #d63aff;
+  --color-brand-mint: #00f0ff;
+  --color-bg-base: #1a1028;
+  --color-bg-surface: #231538;
+  --color-bg-elevated: #2a1a40;
+  --color-text-primary: #f0e6ff;
+  --color-text-secondary: #9b7ec8;
+  --color-text-accent: #00f0ff;
+  --color-border-default: rgba(255, 46, 151, 0.15);
+  --color-border-hover: rgba(255, 46, 151, 0.3);
+  --glass-bg: rgba(26, 16, 40, 0.6);
+}
+
+/* ── MATRIX ── */
+[data-theme="matrix"] {
+  --color-brand: #00ff41;
+  --color-brand-light: #39ff14;
+  --color-brand-mint: #7cfc00;
+  --color-bg-base: #0a0a0a;
+  --color-bg-surface: #0d140d;
+  --color-bg-elevated: #0a140a;
+  --color-text-primary: #00ff41;
+  --color-text-secondary: #00c818;
+  --color-text-accent: #7cfc00;
+  --color-border-default: rgba(0, 255, 65, 0.15);
+  --color-border-hover: rgba(0, 255, 65, 0.3);
+  --glass-bg: rgba(10, 10, 10, 0.6);
+}
+
+/* ── BLOOD MOON ── */
+[data-theme="bloodmoon"] {
+  --color-brand: #ff0040;
+  --color-brand-light: #ff4d6d;
+  --color-brand-mint: #ff8fa3;
+  --color-bg-base: #0d0208;
+  --color-bg-surface: #150610;
+  --color-bg-elevated: #1a0410;
+  --color-text-primary: #f0e6e8;
+  --color-text-secondary: #c06b84;
+  --color-text-accent: #ff8fa3;
+  --color-border-default: rgba(255, 0, 64, 0.15);
+  --color-border-hover: rgba(255, 0, 64, 0.3);
+  --glass-bg: rgba(13, 2, 8, 0.6);
+}
+
+/* ── MIDNIGHT ── */
+[data-theme="midnight"] {
+  --color-brand: #e8457c;
+  --color-brand-light: #a78bfa;
+  --color-brand-mint: #7dd3fc;
+  --color-bg-base: #0f0f1a;
+  --color-bg-surface: #161624;
+  --color-bg-elevated: #18182a;
+  --color-text-primary: #e8e6f0;
+  --color-text-secondary: #9290a8;
+  --color-text-accent: #c4b5fd;
+  --color-border-default: rgba(232, 69, 124, 0.15);
+  --color-border-hover: rgba(232, 69, 124, 0.3);
+  --glass-bg: rgba(15, 15, 26, 0.6);
+}
+
+/* ── GRUVBOX ── */
+[data-theme="gruvbox"] {
+  --color-brand: #fabd2f;
+  --color-brand-light: #83a598;
+  --color-brand-mint: #b8bb26;
+  --color-bg-base: #282828;
+  --color-bg-surface: #32302f;
+  --color-bg-elevated: #3c3836;
+  --color-text-primary: #ebdbb2;
+  --color-text-secondary: #a89984;
+  --color-text-accent: #b8bb26;
+  --color-border-default: rgba(250, 189, 47, 0.15);
+  --color-border-hover: rgba(250, 189, 47, 0.3);
+  --glass-bg: rgba(40, 40, 40, 0.6);
+}
+
+/* ── CYBERPUNK ── */
+[data-theme="cyberpunk"] {
+  --color-brand: #ff2e97;
+  --color-brand-light: #d63aff;
+  --color-brand-mint: #00ffff;
+  --color-bg-base: #0a0a12;
+  --color-bg-surface: #101018;
+  --color-bg-elevated: #12121e;
+  --color-text-primary: #e8e6f0;
+  --color-text-secondary: #8888aa;
+  --color-text-accent: #ffd700;
+  --color-border-default: rgba(255, 46, 151, 0.15);
+  --color-border-hover: rgba(255, 46, 151, 0.3);
+  --glass-bg: rgba(10, 10, 18, 0.6);
+}
+
+/* ── NEBULA ── */
+[data-theme="nebula"] {
+  --color-brand: #e040fb;
+  --color-brand-light: #7c4dff;
+  --color-brand-mint: #b388ff;
+  --color-bg-base: #0b0014;
+  --color-bg-surface: #110820;
+  --color-bg-elevated: #160828;
+  --color-text-primary: #f0e6ff;
+  --color-text-secondary: #9b7ec8;
+  --color-text-accent: #b388ff;
+  --color-border-default: rgba(224, 64, 251, 0.15);
+  --color-border-hover: rgba(224, 64, 251, 0.3);
+  --glass-bg: rgba(11, 0, 20, 0.6);
+}
+
+/* ── SOLARIZED ── */
+[data-theme="solarized"] {
+  --color-brand: #dc322f;
+  --color-brand-light: #6c71c4;
+  --color-brand-mint: #268bd2;
+  --color-bg-base: #002b36;
+  --color-bg-surface: #04323e;
+  --color-bg-elevated: #073642;
+  --color-text-primary: #fdf6e3;
+  --color-text-secondary: #839496;
+  --color-text-accent: #268bd2;
+  --color-border-default: rgba(220, 50, 47, 0.15);
+  --color-border-hover: rgba(220, 50, 47, 0.3);
+  --glass-bg: rgba(0, 43, 54, 0.6);
+}
+
+/* ── ROSE PINE ── */
+[data-theme="rosepine"] {
+  --color-brand: #ea9a97;
+  --color-brand-light: #c4a7e7;
+  --color-brand-mint: #9ccfd8;
+  --color-bg-base: #191724;
+  --color-bg-surface: #1f1d2e;
+  --color-bg-elevated: #262335;
+  --color-text-primary: #e0def4;
+  --color-text-secondary: #908caa;
+  --color-text-accent: #9ccfd8;
+  --color-border-default: rgba(234, 154, 151, 0.15);
+  --color-border-hover: rgba(234, 154, 151, 0.3);
+  --glass-bg: rgba(25, 23, 36, 0.6);
+}
+
+/* ── MONOKAI ── */
+[data-theme="monokai"] {
+  --color-brand: #a6e22e;
+  --color-brand-light: #66d9ef;
+  --color-brand-mint: #f92672;
+  --color-bg-base: #272822;
+  --color-bg-surface: #302f28;
+  --color-bg-elevated: #37362c;
+  --color-text-primary: #f8f8f2;
+  --color-text-secondary: #90908a;
+  --color-text-accent: #f92672;
+  --color-border-default: rgba(166, 226, 46, 0.15);
+  --color-border-hover: rgba(166, 226, 46, 0.3);
+  --glass-bg: rgba(39, 40, 34, 0.6);
+}
+
+/* ══════════════════════════════════════════
+   Theme Transitions
+   ══════════════════════════════════════════ */
+
+body,
+nav,
+.glass,
+.glow-border,
+.section-surface {
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* ══════════════════════════════════════════
+   Light Theme Overrides
+   ══════════════════════════════════════════ */
+
+[data-theme="light"] .glass {
+  background: rgba(238, 240, 242, 0.75);
+  border-color: rgba(212, 0, 74, 0.15);
+}
+
+[data-theme="light"] .gradient-text {
+  background: linear-gradient(135deg, #d4004a 0%, #b030d0 50%, #0090c0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .section-surface {
+  background-color: #eef0f2;
+}
+
+[data-theme="light"] .section-surface::before {
+  background: linear-gradient(to bottom, #f8f9fa, transparent);
+}
+
+[data-theme="light"] .section-surface::after {
+  background: linear-gradient(to top, #f8f9fa, transparent);
+}
+
+[data-theme="light"] body::before {
+  opacity: 0.008;
+}
+
+[data-theme="light"] ::selection {
+  background-color: rgba(212, 0, 74, 0.25);
+  color: #0c4a6e;
+}
+
+/* ══════════════════════════════════════════
+   Theme-Specific Effects
+   ══════════════════════════════════════════ */
+
+[data-theme="matrix"] .section-title,
+[data-theme="matrix"] .gradient-text {
+  filter: drop-shadow(0 0 12px rgba(0, 255, 65, 0.4));
+}
+
+[data-theme="cyberpunk"] .section-title {
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+[data-theme="bloodmoon"] .section-title {
+  text-shadow: 0 0 10px rgba(255, 0, 64, 0.25);
+}
+
+[data-theme="synthwave"] .section-title {
+  text-shadow: 0 0 10px rgba(255, 46, 151, 0.25);
+}
