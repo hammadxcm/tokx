@@ -56,7 +56,7 @@ jobs:
           (Get-FileHash tokx-${{ matrix.target }}.zip -Algorithm SHA256).Hash | Out-File tokx-${{ matrix.target }}.zip.sha256
 
       - name: Upload to Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             tokx-${{ matrix.target }}.*
