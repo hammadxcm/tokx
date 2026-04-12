@@ -1,6 +1,6 @@
 {
   "name": "@tokx/core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "JWT decode, encode, and verify utilities wrapping jose",
   "type": "module",
   "exports": {
