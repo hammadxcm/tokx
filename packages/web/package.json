@@ -13,7 +13,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.0.0",
+    "@astrojs/mdx": "^5.0.3",
     "@astrojs/react": "^4.2.0",
     "@astrojs/sitemap": "^3.3.0",
     "@tokx/core": "workspace:*",
