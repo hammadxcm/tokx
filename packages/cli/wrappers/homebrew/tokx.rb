@@ -2,7 +2,7 @@ class Tokx < Formula
   desc "JWT decode, encode, verify from your terminal"
   homepage "https://github.com/hammadxcm/tokx"
   license "MIT"
-  version "0.0.1"
+  version "0.1.1"
 
   on_macos do
     if Hardware::CPU.arm?
@@ -29,6 +29,6 @@ class Tokx < Formula
   end
 
   test do
-    assert_match "0.0.1", shell_output("#{bin}/tokx --version")
+    assert_match "0.1.1", shell_output("#{bin}/tokx --version")
   end
 end

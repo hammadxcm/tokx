@@ -1,5 +1,5 @@
 PackageIdentifier: hammadxcm.tokx
-PackageVersion: 0.0.1
+PackageVersion: 0.1.1
 PackageName: tokx
 Publisher: Hammad Khan
 License: MIT
@@ -8,7 +8,7 @@ PackageUrl: https://github.com/hammadxcm/tokx
 Installers:
   - Architecture: x64
     InstallerType: zip
-    InstallerUrl: https://github.com/hammadxcm/tokx/releases/download/v0.0.1/tokx-win-x64.zip
+    InstallerUrl: https://github.com/hammadxcm/tokx/releases/download/v0.1.1/tokx-win-x64.zip
     InstallerSha256: PLACEHOLDER
 ManifestType: singleton
 ManifestVersion: 1.6.0

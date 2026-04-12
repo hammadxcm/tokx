@@ -1,5 +1,5 @@
 name: tokx
-version: '0.0.1'
+version: '0.1.1'
 summary: JWT decode, encode, verify from your terminal
 description: |
   tokx is a CLI tool for working with JSON Web Tokens.

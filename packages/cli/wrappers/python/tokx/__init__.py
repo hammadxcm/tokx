@@ -12,7 +12,7 @@ import sys
 import urllib.request
 from pathlib import Path
 
-VERSION = "0.0.1"
+VERSION = "0.1.1"
 GITHUB_RELEASE = f"https://github.com/hammadxcm/tokx/releases/download/v{VERSION}"
 
 PLATFORM_MAP = {

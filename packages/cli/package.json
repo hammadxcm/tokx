@@ -1,6 +1,6 @@
 {
   "name": "tokx-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "JWT decode, encode, verify from your terminal",
   "type": "module",
   "bin": {

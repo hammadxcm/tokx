@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+tokx/__init__.py
+tokx.egg-info/PKG-INFO
+tokx.egg-info/SOURCES.txt
+tokx.egg-info/dependency_links.txt
+tokx.egg-info/entry_points.txt
+tokx.egg-info/top_level.txt

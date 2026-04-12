@@ -1,0 +1,45 @@
+Metadata-Version: 2.4
+Name: tokx
+Version: 0.1.0
+Summary: JWT decode, encode, verify from your terminal
+Author: Hammad Khan
+License: MIT
+Project-URL: Homepage, https://github.com/hammadxcm/tokx
+Project-URL: Repository, https://github.com/hammadxcm/tokx
+Project-URL: Issues, https://github.com/hammadxcm/tokx/issues
+Keywords: jwt,json-web-token,cli,decode,encode,verify
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Security
+Classifier: Topic :: Utilities
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# tokx
+
+JWT decode, encode, verify from your terminal.
+
+## Install
+
+```bash
+pip install tokx
+```
+
+## Usage
+
+```bash
+tokx decode <token>
+tokx encode --secret <secret> --payload '{"sub":"123"}'
+tokx verify <token> --secret <secret>
+tokx libs --language Go
+```
+
+On first run, the binary will be downloaded automatically for your platform.
+
+## License
+
+MIT
