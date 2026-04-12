@@ -1,0 +1,77 @@
+---
+const exports = [
+  { name: 'decode(token)', desc: 'Decode JWT without verification' },
+  { name: 'encode(options)', desc: 'Sign a JWT with any algorithm' },
+  { name: 'verify(token, opts)', desc: 'Verify signature + validate claims' },
+  { name: 'ALGORITHMS', desc: 'All 13 supported algorithm metadata' },
+  { name: 'base64url', desc: 'Encode/decode/validate base64url' },
+  { name: 'isSymmetric(alg)', desc: 'Check if algorithm uses shared secret' },
+];
+
+const codeExample = `import { decode, encode, verify } from '@tokx/core';
+
+// Decode
+const { header, payload } = decode(token);
+
+// Encode
+const jwt = await encode({
+  algorithm: 'HS256',
+  payload: { sub: '123', role: 'admin' },
+  secret: process.env.JWT_SECRET,
+});
+
+// Verify
+const result = await verify(jwt, {
+  algorithm: 'HS256',
+  secret: process.env.JWT_SECRET,
+});
+// { valid: true }`;
+---
+
+<section class="section" id="api">
+  <div class="section-header reveal">
+    <span class="section-label">api</span>
+    <h2 class="section-title">Import <span class="gradient-text">@tokx/core</span> in your project</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="api-grid reveal">
+    <div class="api-exports">
+      <h3 class="api-exports-title">Exports</h3>
+      {exports.map((ex) => (
+        <div class="api-export-item">
+          <code class="api-fn">{ex.name}</code>
+          <span class="api-desc">{ex.desc}</span>
+        </div>
+      ))}
+      <div class="api-install">
+        <code>npm install @tokx/core</code>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <span class="terminal-dot terminal-dot--red"></span>
+        <span class="terminal-dot terminal-dot--yellow"></span>
+        <span class="terminal-dot terminal-dot--green"></span>
+        <span class="terminal-title">app.ts</span>
+      </div>
+      <div class="terminal-body">
+        <pre class="api-code">{codeExample}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .api-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; align-items: start; }
+  .api-exports-title { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); margin: 0 0 1rem; }
+  .api-export-item { padding: 0.75rem 0; border-bottom: 1px solid var(--color-border-default); display: flex; flex-direction: column; gap: 0.25rem; transition: transform 0.2s ease; }
+  .api-export-item:hover { transform: translateX(4px); }
+  .api-fn { font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-brand); }
+  .api-desc { font-size: 0.75rem; color: var(--color-text-secondary); }
+  .api-install { margin-top: 1.5rem; padding: 0.75rem 1rem; background: var(--color-bg-base); border: 1px dashed var(--color-border-default); border-radius: var(--radius-md); }
+  .api-install code { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-brand-mint); }
+  .api-code { font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.6; color: var(--color-text-primary); margin: 0; white-space: pre; overflow-x: auto; }
+  @media (max-width: 768px) { .api-grid { grid-template-columns: 1fr; } }
+</style>

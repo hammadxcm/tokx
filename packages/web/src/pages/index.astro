@@ -3,6 +3,11 @@ import Footer from '../components/common/Footer.astro';
 import Nav from '../components/common/Nav.astro';
 import JwtDebugger from '../components/debugger/JwtDebugger';
 import Hero from '../components/hero/Hero.astro';
+import ApiShowcase from '../components/showcase/ApiShowcase.astro';
+import CliFeatures from '../components/showcase/CliFeatures.astro';
+import Comparison from '../components/showcase/Comparison.astro';
+import Demo from '../components/showcase/Demo.astro';
+import Install from '../components/showcase/Install.astro';
 import Marquee from '../components/showcase/Marquee.astro';
 import Layout from '../layouts/Layout.astro';
 ---
@@ -12,6 +17,11 @@ import Layout from '../layouts/Layout.astro';
     <Hero />
     <Marquee />
     <JwtDebugger client:only="react" />
+    <CliFeatures />
+    <Comparison />
+    <Install />
+    <Demo />
+    <ApiShowcase />
   </main>
   <Footer />
 </Layout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>tokx</id>
+    <version>0.0.1</version>
+    <title>tokx</title>
+    <authors>Hammad Khan</authors>
+    <owners>hammadxcm</owners>
+    <projectUrl>https://github.com/hammadxcm/tokx</projectUrl>
+    <licenseUrl>https://github.com/hammadxcm/tokx/blob/main/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>JWT decode, encode, verify from your terminal. Supports HS256-512, RS256-512, ES256-512, PS256-512, EdDSA.</description>
+    <summary>JWT CLI tool</summary>
+    <tags>jwt json-web-token cli decode encode verify</tags>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

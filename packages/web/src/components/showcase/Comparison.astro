@@ -1,0 +1,68 @@
+---
+---
+
+<section class="section" id="comparison">
+  <div class="section-header reveal">
+    <span class="section-label">why tokx?</span>
+    <h2 class="section-title">Stop the <span class="gradient-text">manual decoding</span></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="compare-grid reveal">
+    <div class="compare-side compare-before">
+      <h3 class="compare-label">The Old Way</h3>
+      <div class="terminal">
+        <div class="terminal-header">
+          <span class="terminal-dot terminal-dot--red"></span>
+          <span class="terminal-dot terminal-dot--yellow"></span>
+          <span class="terminal-dot terminal-dot--green"></span>
+          <span class="terminal-title">bash</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line terminal-prompt">$ echo "eyJhbGci..." | cut -d. -f2</div>
+          <div class="terminal-line terminal-output">  eyJzdWIiOiIxMjM0NTY3ODkw...</div>
+          <div class="terminal-line terminal-prompt">$ echo "eyJzdWIi..." | base64 -d</div>
+          <div class="terminal-line terminal-output">{'  {"sub":"1234567890","name":"John"}'}</div>
+          <div class="terminal-line terminal-prompt">$ # Now do the header too...</div>
+          <div class="terminal-line terminal-prompt">$ # And verify the signature?</div>
+          <div class="terminal-line terminal-error">  # Good luck with that manually</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-vs">
+      <span class="compare-vs-text">vs</span>
+    </div>
+
+    <div class="compare-side compare-after">
+      <h3 class="compare-label">The tokx Way</h3>
+      <div class="terminal compare-glow">
+        <div class="terminal-header">
+          <span class="terminal-dot terminal-dot--red"></span>
+          <span class="terminal-dot terminal-dot--yellow"></span>
+          <span class="terminal-dot terminal-dot--green"></span>
+          <span class="terminal-title">tokx</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line terminal-prompt">$ tokx decode eyJhbGci...</div>
+          <div class="terminal-line terminal-success">  ┌─ HEADER (HS256) ──────┐</div>
+          <div class="terminal-line terminal-output">{'  │ { "alg": "HS256" }    │'}</div>
+          <div class="terminal-line terminal-success">  └────────────────────────┘</div>
+          <div class="terminal-line terminal-output">  ✓ sub  1234567890</div>
+          <div class="terminal-line terminal-output">  ✓ iat  2018-01-18</div>
+          <div class="terminal-line terminal-success">  Algorithm: HS256</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .compare-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: center; }
+  .compare-label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); margin: 0 0 1rem; text-align: center; }
+  .compare-before { opacity: 0.6; }
+  .compare-vs { display: flex; align-items: center; justify-content: center; }
+  .compare-vs-text { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 800; color: var(--color-text-secondary); background: var(--color-bg-elevated); border: 1px solid var(--color-border-default); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; animation: subtle-pulse 3s ease-in-out infinite; }
+  .compare-glow { box-shadow: 0 0 30px -5px rgba(251, 1, 91, 0.15); }
+  @media (max-width: 768px) { .compare-grid { grid-template-columns: 1fr; } .compare-vs { padding: 1rem 0; } }
+</style>

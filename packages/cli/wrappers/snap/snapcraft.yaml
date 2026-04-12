@@ -1,0 +1,17 @@
+name: tokx
+version: '0.0.1'
+summary: JWT decode, encode, verify from your terminal
+description: |
+  tokx is a CLI tool for working with JSON Web Tokens.
+  Decode, encode, verify, and browse JWT libraries.
+base: core22
+confinement: strict
+grade: stable
+apps:
+  tokx:
+    command: tokx
+parts:
+  tokx:
+    plugin: dump
+    source: https://github.com/hammadxcm/tokx/releases/download/v${SNAPCRAFT_PROJECT_VERSION}/tokx-linux-x64.tar.gz
+    source-type: tar

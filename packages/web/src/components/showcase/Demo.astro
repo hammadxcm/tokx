@@ -1,0 +1,181 @@
+---
+const tabs = [
+  {
+    id: 'decode',
+    label: 'Decode',
+    examples: [
+      {
+        title: 'Decode a JWT',
+        lines: [
+          { type: 'prompt', text: '$ tokx decode eyJhbGciOiJIUzI1NiIs...' },
+          { type: 'output', text: '  ████████████.████████████████████████.███████████████' },
+          { type: 'success', text: '  ┌─ HEADER (HS256) ──────────────┐' },
+          { type: 'output', text: '  │ { "alg": "HS256", "typ": "JWT" } │' },
+          { type: 'success', text: '  └──────────────────────────────────┘' },
+          { type: 'output', text: '  ✓ sub  1234567890' },
+          { type: 'output', text: '  ✓ iat  2018-01-18T01:30:22.000Z' },
+        ],
+      },
+      {
+        title: 'JSON output',
+        lines: [
+          { type: 'prompt', text: '$ tokx decode <token> --json' },
+          {
+            type: 'output',
+            text: '  { "header": { "alg": "HS256" }, "payload": { "sub": "123" } }',
+          },
+        ],
+      },
+      {
+        title: 'Pipe from stdin',
+        lines: [
+          { type: 'prompt', text: '$ echo $TOKEN | tokx decode -' },
+          { type: 'success', text: '  ┌─ HEADER (RS256) ─┐' },
+          { type: 'output', text: '  │ { "alg": "RS256" } │' },
+          { type: 'success', text: '  └────────────────────┘' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'encode',
+    label: 'Encode',
+    examples: [
+      {
+        title: 'Sign a new JWT',
+        lines: [
+          { type: 'prompt', text: '$ tokx encode --secret my-secret --payload \'{"sub":"123"}\'' },
+          { type: 'info', text: '  ⠋ Signing token...' },
+          { type: 'success', text: '  ✓ Token signed (HS256)' },
+          { type: 'output', text: '  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' },
+        ],
+      },
+      {
+        title: 'With expiration',
+        lines: [
+          {
+            type: 'prompt',
+            text: '$ tokx encode --secret s --payload \'{"sub":"1"}\' --expires 3600',
+          },
+          { type: 'success', text: '  ✓ Token signed (HS256)' },
+          { type: 'output', text: '  eyJhbGciOiJIUzI1NiIs...  (expires in 1h)' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'verify',
+    label: 'Verify',
+    examples: [
+      {
+        title: 'Valid signature',
+        lines: [
+          { type: 'prompt', text: '$ tokx verify <token> --secret my-secret' },
+          { type: 'info', text: '  ⠋ Verifying signature...' },
+          { type: 'success', text: '  ╔══════════════════════════╗' },
+          { type: 'success', text: '  ║  ✓ SIGNATURE VERIFIED    ║' },
+          { type: 'success', text: '  ╚══════════════════════════╝' },
+        ],
+      },
+      {
+        title: 'Invalid signature',
+        lines: [
+          { type: 'prompt', text: '$ tokx verify <token> --secret wrong' },
+          { type: 'error', text: '  ╔═══════════════════════╗' },
+          { type: 'error', text: '  ║  ✗ INVALID SIGNATURE  ║' },
+          { type: 'error', text: '  ╚═══════════════════════╝' },
+          { type: 'error', text: '  signature verification failed' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'libs',
+    label: 'Libraries',
+    examples: [
+      {
+        title: 'Filter by language',
+        lines: [
+          { type: 'prompt', text: '$ tokx libs --language Python' },
+          { type: 'output', text: '  ┌────────────┬───────┬────────┬──────────────────┐' },
+          { type: 'output', text: '  │ Library    │ Lang  │ ★      │ Install          │' },
+          { type: 'output', text: '  ├────────────┼───────┼────────┼──────────────────┤' },
+          { type: 'output', text: '  │ PyJWT      │ [PY]  │ ★ 5.1k │ pip install PyJWT│' },
+          { type: 'output', text: '  │ authlib    │ [PY]  │ ★ 4.5k │ pip install authlib│' },
+          { type: 'output', text: '  └────────────┴───────┴────────┴──────────────────┘' },
+        ],
+      },
+      {
+        title: 'JSON output',
+        lines: [
+          { type: 'prompt', text: '$ tokx libs --json | jq ".[0].name"' },
+          { type: 'output', text: '  "jsonwebtoken"' },
+        ],
+      },
+    ],
+  },
+];
+---
+
+<section class="section" id="demos">
+  <div class="section-header reveal">
+    <span class="section-label">cli in action</span>
+    <h2 class="section-title">See tokx in your <span class="gradient-text">terminal</span></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="demo-tabs reveal" role="tablist" aria-label="CLI demos">
+    {tabs.map((tab, i) => (
+      <button role="tab" id={`demo-tab-${tab.id}`} class={`demo-tab-btn ${i === 0 ? 'active' : ''}`} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`demo-panel-${tab.id}`} type="button">{tab.label}</button>
+    ))}
+  </div>
+
+  {tabs.map((tab, i) => (
+    <div class={`demo-panel ${i === 0 ? 'active' : ''}`} role="tabpanel" id={`demo-panel-${tab.id}`} aria-labelledby={`demo-tab-${tab.id}`}>
+      <div class="demo-grid">
+        {tab.examples.map((ex) => (
+          <div class="demo-example">
+            <h4 class="demo-title">{ex.title}</h4>
+            <div class="terminal">
+              <div class="terminal-header">
+                <span class="terminal-dot terminal-dot--red"></span>
+                <span class="terminal-dot terminal-dot--yellow"></span>
+                <span class="terminal-dot terminal-dot--green"></span>
+                <span class="terminal-title">tokx</span>
+              </div>
+              <div class="terminal-body">
+                {ex.lines.map((line) => (
+                  <div class={`terminal-line terminal-${line.type}`}>{line.text}</div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</section>
+
+<style>
+  .demo-tabs { display: flex; gap: 0; margin-bottom: 24px; border-bottom: 2px solid var(--color-border-default); }
+  .demo-tab-btn { padding: 12px 24px; font-size: 0.9rem; font-weight: 600; color: var(--color-text-secondary); cursor: pointer; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.2s, border-color 0.2s; min-height: 44px; display: flex; align-items: center; background: none; font-family: var(--font-body); }
+  .demo-tab-btn:hover { color: var(--color-text-primary); }
+  .demo-tab-btn.active { color: var(--color-brand); border-bottom-color: var(--color-brand); }
+  .demo-panel { display: none; }
+  .demo-panel.active { display: block; }
+  .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+  .demo-title { font-size: 0.85rem; font-weight: 600; color: var(--color-text-primary); margin: 0 0 0.75rem; }
+  .terminal-info { color: var(--color-brand-mint); }
+  @media (max-width: 640px) { .demo-grid { grid-template-columns: 1fr; } .demo-tab-btn { padding: 10px 16px; font-size: 0.8rem; } }
+</style>
+
+<script>
+  const dTabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.demo-tab-btn'));
+  const dPanels = document.querySelectorAll<HTMLElement>('.demo-panel');
+  dTabs.forEach((tab) => tab.addEventListener('click', () => {
+    dTabs.forEach((t) => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+    tab.classList.add('active'); tab.setAttribute('aria-selected', 'true');
+    const id = tab.getAttribute('aria-controls');
+    dPanels.forEach((p) => p.classList.toggle('active', p.id === id));
+  }));
+</script>

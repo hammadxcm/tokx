@@ -1,0 +1,107 @@
+---
+const features = [
+  {
+    icon: '🔓',
+    title: 'Decode JWT',
+    command: 'tokx decode <token>',
+    desc: 'Pretty-print header + payload with colors',
+  },
+  {
+    icon: '🔐',
+    title: 'Encode JWT',
+    command: 'tokx encode --secret s --payload {}',
+    desc: 'Sign tokens with any algorithm',
+  },
+  {
+    icon: '✓',
+    title: 'Verify Signature',
+    command: 'tokx verify <token> --secret s',
+    desc: 'Validate with badge output',
+  },
+  {
+    icon: '📚',
+    title: 'Browse Libraries',
+    command: 'tokx libs --language Go',
+    desc: '46 libraries across 31 languages',
+  },
+  {
+    icon: '📄',
+    title: 'JSON Output',
+    command: 'tokx decode <token> --json',
+    desc: 'Machine-readable for piping to jq',
+  },
+  {
+    icon: '⏳',
+    title: 'Async Spinner',
+    command: '⠋ Signing token...',
+    desc: 'Visual feedback for async operations',
+  },
+  {
+    icon: '📦',
+    title: 'Box Output',
+    command: '┌─ HEADER ──────┐',
+    desc: 'Box-framed decoded sections',
+  },
+  {
+    icon: '🏅',
+    title: 'Verify Badge',
+    command: '╔══ ✓ VERIFIED ══╗',
+    desc: 'Double-line verification badges',
+  },
+  {
+    icon: '🎨',
+    title: 'Color-Coded',
+    command: 'header.payload.signature',
+    desc: 'JWT parts in red.purple.cyan',
+  },
+  {
+    icon: '🔗',
+    title: 'Stdin Piping',
+    command: 'echo TOKEN | tokx decode -',
+    desc: 'Unix-friendly composability',
+  },
+  {
+    icon: '🚫',
+    title: 'NO_COLOR',
+    command: 'NO_COLOR=1 tokx decode ...',
+    desc: 'Respects NO_COLOR standard',
+  },
+  {
+    icon: '🚪',
+    title: 'Exit Codes',
+    command: '0=ok 1=input 2=verify 3=error',
+    desc: 'Proper exit codes for scripts',
+  },
+];
+---
+
+<section class="section" id="cli-features">
+  <div class="section-header reveal">
+    <span class="section-label">cli</span>
+    <h2 class="section-title">JWT operations from your <span class="gradient-text">terminal</span></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="cli-grid stagger">
+    {features.map((f) => (
+      <div class="cli-card glass glass-shimmer card-hover reveal">
+        <div class="cli-card-icon">{f.icon}</div>
+        <h3 class="cli-card-title">{f.title}</h3>
+        <p class="cli-card-desc">{f.desc}</p>
+        <code class="cli-card-command">{f.command}</code>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .cli-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+  .cli-card { padding: 1.25rem; border-radius: var(--radius-lg); display: flex; flex-direction: column; gap: 0.5rem; }
+  .cli-card-icon { font-size: 1.5rem; }
+  .cli-card-title { font-size: 0.95rem; font-weight: 700; color: var(--color-text-primary); margin: 0; }
+  .cli-card-desc { font-size: 0.8rem; color: var(--color-text-secondary); margin: 0; line-height: 1.5; flex: 1; }
+  .cli-card-command { font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-brand-mint); background: var(--color-bg-base); padding: 0.4rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border-default); opacity: 0; transform: translateY(4px); transition: opacity 0.3s ease, transform 0.3s ease; }
+  .cli-card:hover .cli-card-command { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .cli-card-command { opacity: 1; transform: none; } }
+  @media (max-width: 640px) { .cli-grid { grid-template-columns: 1fr; } }
+</style>
