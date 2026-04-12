@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@tokx/core": "workspace:*",
-    "commander": "^13.1.0",
+    "commander": "^14.0.3",
     "picocolors": "^1.1.1",
     "cli-table3": "^0.6.5"
   },
