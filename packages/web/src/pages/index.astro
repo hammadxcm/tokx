@@ -9,6 +9,7 @@ import Comparison from '../components/showcase/Comparison.astro';
 import Demo from '../components/showcase/Demo.astro';
 import Install from '../components/showcase/Install.astro';
 import Marquee from '../components/showcase/Marquee.astro';
+import Stats from '../components/showcase/Stats.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 <Layout title="tokx — JWT Debugger">
@@ -17,6 +18,7 @@ import Layout from '../layouts/Layout.astro';
     <Hero />
     <Marquee />
     <JwtDebugger client:only="react" />
+    <Stats />
     <CliFeatures />
     <Comparison />
     <Install />

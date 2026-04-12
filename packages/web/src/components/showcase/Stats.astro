@@ -1,0 +1,161 @@
+---
+---
+
+<section class="section" id="stats">
+  <div class="stats-grid stagger" id="stats-grid">
+    <div class="stat-card glass glass-shimmer reveal" data-stat="downloads">
+      <span class="stat-value gradient-text" data-target="0" id="stat-downloads">—</span>
+      <span class="stat-label">Downloads</span>
+    </div>
+    <div class="stat-card glass glass-shimmer reveal" data-stat="stars">
+      <span class="stat-value gradient-text" data-target="0" id="stat-stars">—</span>
+      <span class="stat-label">GitHub Stars</span>
+    </div>
+    <div class="stat-card glass glass-shimmer reveal">
+      <span class="stat-value gradient-text stat-counter" data-target="93">0</span>
+      <span class="stat-label">Tests Passing</span>
+    </div>
+    <div class="stat-card glass glass-shimmer reveal">
+      <span class="stat-value gradient-text stat-counter" data-target="15">0</span>
+      <span class="stat-label">Themes</span>
+    </div>
+    <div class="stat-card glass glass-shimmer reveal">
+      <span class="stat-value gradient-text stat-counter" data-target="12">0</span>
+      <span class="stat-label">Languages</span>
+    </div>
+    <div class="stat-card glass glass-shimmer reveal">
+      <span class="stat-value gradient-text stat-counter" data-target="46">0</span>
+      <span class="stat-label">Libraries</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem 1rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+  }
+  .stat-value {
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .stat-value.loading {
+    animation: subtle-pulse 1.5s ease-in-out infinite;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+  }
+  @media (max-width: 640px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-value { font-size: 2rem; }
+  }
+</style>
+
+<script>
+  function formatNumber(n: number): string {
+    if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+    if (n >= 1_000) return `${(n / 1_000).toFixed(1)}k`;
+    return String(n);
+  }
+
+  function animateCounter(el: HTMLElement, target: number, formatted: string): void {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.textContent = formatted;
+      return;
+    }
+    const steps = 40;
+    const duration = 1500;
+    const interval = duration / steps;
+    const increment = Math.ceil(target / steps);
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+        el.textContent = formatted;
+        return;
+      }
+      el.textContent = formatNumber(current);
+    }, interval);
+  }
+
+  // Fetch dynamic stats
+  const downloadsEl = document.getElementById('stat-downloads');
+  const starsEl = document.getElementById('stat-stars');
+
+  if (downloadsEl) downloadsEl.classList.add('loading');
+  if (starsEl) starsEl.classList.add('loading');
+
+  Promise.allSettled([
+    fetch('https://api.npmjs.org/downloads/point/last-month/tokx-cli').then((r) => r.json()),
+    fetch('https://api.github.com/repos/hammadxcm/tokx').then((r) => r.json()),
+  ]).then(([dlResult, ghResult]) => {
+    if (dlResult.status === 'fulfilled' && dlResult.value.downloads !== undefined) {
+      const count = dlResult.value.downloads;
+      if (downloadsEl) {
+        downloadsEl.classList.remove('loading');
+        downloadsEl.dataset.target = String(count);
+        downloadsEl.dataset.dynamic = 'true';
+        downloadsEl.textContent = formatNumber(count);
+      }
+    } else if (downloadsEl) {
+      downloadsEl.classList.remove('loading');
+      downloadsEl.textContent = '—';
+    }
+
+    if (ghResult.status === 'fulfilled' && ghResult.value.stargazers_count !== undefined) {
+      const count = ghResult.value.stargazers_count;
+      if (starsEl) {
+        starsEl.classList.remove('loading');
+        starsEl.dataset.target = String(count);
+        starsEl.dataset.dynamic = 'true';
+        starsEl.textContent = formatNumber(count);
+      }
+    } else if (starsEl) {
+      starsEl.classList.remove('loading');
+      starsEl.textContent = '—';
+    }
+  });
+
+  // Animate counters on scroll
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const counters = entry.target.querySelectorAll<HTMLElement>('.stat-counter');
+        for (const el of counters) {
+          const target = Number(el.dataset.target);
+          if (target > 0) animateCounter(el, target, String(target));
+        }
+        // Animate dynamic counters too
+        const dynamicEls = entry.target.querySelectorAll<HTMLElement>('[data-dynamic="true"]');
+        for (const el of dynamicEls) {
+          const target = Number(el.dataset.target);
+          if (target > 0) animateCounter(el, target, formatNumber(target));
+        }
+        observer.unobserve(entry.target);
+      }
+    },
+    { threshold: 0.2 },
+  );
+
+  const grid = document.getElementById('stats-grid');
+  if (grid) observer.observe(grid);
+</script>
