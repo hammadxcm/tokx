@@ -2,11 +2,6 @@ import { importSPKI, jwtVerify } from 'jose';
 import { isSymmetric } from './algorithms.js';
 import type { VerifyOptions, VerifyResult } from './types.js';
 
-function toErrorMessage(err: unknown): string {
-  if (err instanceof Error) return err.message;
-  return String(err);
-}
-
 /**
  * Verify a JWT signature and validate claims.
  * Returns { valid: true } or { valid: false, error: '...' }.
@@ -37,7 +32,7 @@ export async function verify(token: string, options: VerifyOptions): Promise<Ver
     await jwtVerify(token, verificationKey, verifyOptions);
     return { valid: true };
   } catch (err) {
-    const message = toErrorMessage(err);
+    const message = (err as Error).message;
 
     if (message.includes('exp') || message.includes('expired')) {
       return { valid: false, error: message, expired: true };
