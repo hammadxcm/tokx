@@ -33,9 +33,13 @@
   },
   "dependencies": {
     "@tokx/core": "workspace:*",
+    "cli-table3": "^0.6.5",
+    "clipboardy": "^5.3.1",
     "commander": "^14.0.3",
+    "gradient-string": "^3.0.0",
+    "ora": "8",
     "picocolors": "^1.1.1",
-    "cli-table3": "^0.6.5"
+    "terminal-link": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.0",

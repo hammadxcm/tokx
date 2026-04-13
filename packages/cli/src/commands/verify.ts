@@ -1,5 +1,6 @@
 import type { JwtAlgorithm } from '@tokx/core';
 import { decode, verify } from '@tokx/core';
+import clipboard from 'clipboardy';
 import { drawBadge } from '../ui/box.js';
 import { c } from '../ui/colors.js';
 import { startSpinner } from '../ui/spinner.js';
@@ -9,6 +10,7 @@ interface VerifyOptions {
   secret?: string;
   publicKey?: string;
   json?: boolean;
+  copy?: boolean;
 }
 
 export async function verifyCommand(token: string, options: VerifyOptions): Promise<void> {
@@ -49,6 +51,10 @@ export async function verifyCommand(token: string, options: VerifyOptions): Prom
     if (result.valid) {
       spinner.stop(true, 'Verification complete');
       process.stdout.write(`\n${drawBadge('SIGNATURE VERIFIED', c.green, '✓')}\n\n`);
+      if (options.copy) {
+        await clipboard.write(JSON.stringify(result));
+        process.stderr.write(`  ${c.green('✓')} ${c.dim('Copied result to clipboard')}\n\n`);
+      }
     } else {
       spinner.stop(false, 'Verification failed');
       process.stdout.write(`\n${drawBadge('INVALID SIGNATURE', c.red, '✗')}\n`);

@@ -29,7 +29,8 @@ program
   .command('decode <token>')
   .description('Decode a JWT and display header + payload (use - for stdin)')
   .option('--json', 'Output as JSON')
-  .action(async (token: string, options: { json?: boolean }) => {
+  .option('-c, --copy', 'Copy decoded token to clipboard')
+  .action(async (token: string, options: { json?: boolean; copy?: boolean }) => {
     const t = token === '-' ? await readStdin() : token;
     return decodeCommand(t, options);
   });
@@ -42,6 +43,7 @@ program
   .option('--algorithm <alg>', 'Algorithm', 'HS256')
   .option('--expires <seconds>', 'Expiration in seconds from now')
   .option('--json', 'Output as JSON')
+  .option('-c, --copy', 'Copy generated token to clipboard')
   .action(encodeCommand);
 
 program
@@ -51,10 +53,17 @@ program
   .option('--public-key <path>', 'Public key PEM file path')
   .option('--algorithm <alg>', 'Algorithm (auto-detected if omitted)')
   .option('--json', 'Output as JSON')
+  .option('-c, --copy', 'Copy result to clipboard')
   .action(
     async (
       token: string,
-      options: { secret?: string; publicKey?: string; algorithm?: string; json?: boolean },
+      options: {
+        secret?: string;
+        publicKey?: string;
+        algorithm?: string;
+        json?: boolean;
+        copy?: boolean;
+      },
     ) => {
       const t = token === '-' ? await readStdin() : token;
       return verifyCommand(t, options);

@@ -1,5 +1,6 @@
 import type { JwtAlgorithm } from '@tokx/core';
 import { encode } from '@tokx/core';
+import clipboard from 'clipboardy';
 import { tokenBar } from '../ui/box.js';
 import { c } from '../ui/colors.js';
 import { startSpinner } from '../ui/spinner.js';
@@ -10,6 +11,7 @@ interface EncodeOptions {
   payload: string;
   expires?: string;
   json?: boolean;
+  copy?: boolean;
 }
 
 export async function encodeCommand(options: EncodeOptions): Promise<void> {
@@ -56,6 +58,11 @@ export async function encodeCommand(options: EncodeOptions): Promise<void> {
         process.stdout.write(`  ${token}\n`);
       }
       process.stdout.write('\n');
+    }
+
+    if (options.copy) {
+      await clipboard.write(token);
+      process.stderr.write(`  ${c.green('✓')} ${c.dim('Copied token to clipboard')}\n\n`);
     }
   } catch (err) {
     process.stderr.write(

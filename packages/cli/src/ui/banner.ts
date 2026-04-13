@@ -1,21 +1,19 @@
+import gradient from 'gradient-string';
 import { c, isTTY } from './colors.js';
+
+const ASCII = `
+  ████████╗ ██████╗ ██╗  ██╗██╗  ██╗
+  ╚══██╔══╝██╔═══██╗██║ ██╔╝╚██╗██╔╝
+     ██║   ██║   ██║█████╔╝  ╚███╔╝
+     ██║   ██║   ██║██╔═██╗  ██╔██╗
+     ██║   ╚██████╔╝██║  ██╗██╔╝ ██╗
+     ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝`;
+
+const jwtGradient = gradient(['#fb015b', '#d63aff', '#00b9f1']);
 
 export function printBanner(): void {
   if (!isTTY()) return;
 
-  const t = c.red('t');
-  const o = c.magenta('o');
-  const k = c.cyan('k');
-  const x = c.cyan('x');
-
-  process.stderr.write('\n');
-  process.stderr.write(`  ${c.dim('┌─────────────────────────────────┐')}\n`);
-  process.stderr.write(
-    `  ${c.dim('│')}  ${t} ${o} ${k} ${x}                          ${c.dim('│')}\n`,
-  );
-  process.stderr.write(
-    `  ${c.dim('│')}  ${c.dim('JWT decode · encode · verify')}    ${c.dim('│')}\n`,
-  );
-  process.stderr.write(`  ${c.dim('└─────────────────────────────────┘')}\n`);
-  process.stderr.write('\n');
+  process.stderr.write(jwtGradient(ASCII));
+  process.stderr.write(`\n\n  ${c.dim('JWT decode · encode · verify')}\n\n`);
 }

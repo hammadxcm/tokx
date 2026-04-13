@@ -1,4 +1,5 @@
 import Table from 'cli-table3';
+import terminalLink from 'terminal-link';
 import { c } from '../ui/colors.js';
 
 interface LibsOptions {
@@ -176,8 +177,9 @@ export function libsCommand(options: LibsOptions): void {
     for (const lib of results) {
       const tag = LANG_TAGS[lib.language] || lib.language.slice(0, 3).toUpperCase();
       const langTag = c.blue(`[${tag}]`);
+      const name = terminalLink(lib.name, lib.url, { fallback: () => lib.name });
       table.push([
-        c.cyan(lib.name),
+        c.cyan(name),
         langTag,
         c.yellow(`★ ${formatStars(lib.stars)}`),
         c.dim(lib.install),

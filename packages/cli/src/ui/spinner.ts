@@ -1,6 +1,5 @@
+import ora from 'ora';
 import { c, isTTY } from './colors.js';
-
-const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
 export function startSpinner(message: string): {
   stop: (success: boolean, finalMsg: string) => void;
@@ -14,17 +13,19 @@ export function startSpinner(message: string): {
     };
   }
 
-  let i = 0;
-  const interval = setInterval(() => {
-    process.stderr.write(`\r  ${c.cyan(FRAMES[i % FRAMES.length])} ${message}`);
-    i++;
-  }, 80);
+  const spinner = ora({
+    text: message,
+    color: 'magenta',
+    indent: 2,
+  }).start();
 
   return {
     stop: (success, finalMsg) => {
-      clearInterval(interval);
-      const icon = success ? c.green('✓') : c.red('✗');
-      process.stderr.write(`\r  ${icon} ${finalMsg}${' '.repeat(20)}\n`);
+      if (success) {
+        spinner.succeed(finalMsg);
+      } else {
+        spinner.fail(finalMsg);
+      }
     },
   };
 }

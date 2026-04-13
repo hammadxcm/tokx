@@ -1,10 +1,12 @@
 import { decode } from '@tokx/core';
+import clipboard from 'clipboardy';
 import { playDecodeAnimation } from '../ui/animation.js';
 import { drawBox, tokenBar } from '../ui/box.js';
 import { c } from '../ui/colors.js';
 
 interface DecodeOptions {
   json?: boolean;
+  copy?: boolean;
 }
 
 function relativeTime(epoch: number): string {
@@ -97,6 +99,12 @@ export async function decodeCommand(token: string, options: DecodeOptions): Prom
     }
 
     process.stdout.write(`\n  ${c.dim('Algorithm:')} ${c.cyan(result.header.alg)}\n\n`);
+
+    if (options.copy) {
+      const copyText = JSON.stringify({ header: result.header, payload: result.payload }, null, 2);
+      await clipboard.write(copyText);
+      process.stderr.write(`  ${c.green('✓')} ${c.dim('Copied decoded token to clipboard')}\n\n`);
+    }
   } catch (err) {
     process.stderr.write(
       `${c.red('error')}: ${err instanceof Error ? err.message : 'Failed to decode token'}\n`,
