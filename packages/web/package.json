@@ -13,20 +13,20 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.4",
-    "@astrojs/react": "^5.0.4",
+    "@astrojs/mdx": "^5.0.6",
+    "@astrojs/react": "^5.0.5",
     "@astrojs/sitemap": "^3.3.0",
     "@tokx/core": "workspace:*",
-    "astro": "^6.3.1",
+    "astro": "^6.3.7",
     "react": "^19.2.6",
     "react-dom": "^19.2.6"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "@types/react": "^19.1.0",
+    "@types/react": "^19.2.15",
     "@types/react-dom": "^19.1.0",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.7"
   },
   "engines": {
     "node": ">=22"
