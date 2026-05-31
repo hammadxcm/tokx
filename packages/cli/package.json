@@ -35,7 +35,7 @@
     "@tokx/core": "workspace:*",
     "cli-table3": "^0.6.5",
     "clipboardy": "^5.3.1",
-    "commander": "^14.0.3",
+    "commander": "^15.0.0",
     "gradient-string": "^3.0.0",
     "ora": "9",
     "picocolors": "^1.1.1",
