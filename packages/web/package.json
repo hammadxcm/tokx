@@ -14,10 +14,10 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.6",
-    "@astrojs/react": "^5.0.5",
-    "@astrojs/sitemap": "^3.3.0",
+    "@astrojs/react": "^5.0.6",
+    "@astrojs/sitemap": "^3.7.3",
     "@tokx/core": "workspace:*",
-    "astro": "^6.3.7",
+    "astro": "^6.4.2",
     "react": "^19.2.6",
     "react-dom": "^19.2.6"
   },
