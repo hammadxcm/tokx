@@ -42,7 +42,7 @@
     "terminal-link": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^25.9.2",
+    "@types/node": "^25.9.3",
     "tsup": "^8.4.0",
     "vitest": "^4.1.8"
   },

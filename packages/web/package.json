@@ -13,11 +13,11 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@astrojs/mdx": "^6.0.2",
+    "@astrojs/mdx": "^6.0.3",
     "@astrojs/react": "^5.0.7",
     "@astrojs/sitemap": "^3.7.3",
     "@tokx/core": "workspace:*",
-    "astro": "^6.4.4",
+    "astro": "^6.4.6",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
