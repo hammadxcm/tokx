@@ -34,7 +34,10 @@ export default function JwtDebugger() {
       return;
     }
     const controller = new AbortController();
-    verify(token, { algorithm, secret })
+    const options = isSymmetric(algorithm)
+      ? { algorithm, secret }
+      : { algorithm, publicKey: secret };
+    verify(token, options)
       .then((result) => {
         if (!controller.signal.aborted) setVerifyResult(result);
       })
