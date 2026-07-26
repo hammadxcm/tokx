@@ -24,13 +24,13 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.16",
-    "@changesets/cli": "^2.31.0",
+    "@biomejs/biome": "^2.5.5",
+    "@changesets/cli": "^2.31.1",
     "@commitlint/cli": "^20.5.3",
-    "@commitlint/config-conventional": "^21.0.2",
-    "@vitest/coverage-v8": "^4.1.8",
+    "@commitlint/config-conventional": "^21.2.0",
+    "@vitest/coverage-v8": "^4.1.10",
     "husky": "^9.1.7",
-    "lint-staged": "^17.0.7",
+    "lint-staged": "^17.2.0",
     "typescript": "^6.0.3"
   },
   "lint-staged": {
