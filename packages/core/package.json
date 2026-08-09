@@ -29,12 +29,12 @@
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
-    "jose": "^6.2.3"
+    "jose": "^6.2.8"
   },
   "devDependencies": {
     "@types/node": "^25.9.2",
     "tsup": "^8.4.0",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.10"
   },
   "engines": {
     "node": ">=22"
