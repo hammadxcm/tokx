@@ -15,18 +15,18 @@
   "dependencies": {
     "@astrojs/mdx": "^6.0.2",
     "@astrojs/react": "^5.0.7",
-    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/sitemap": "^3.7.4",
     "@tokx/core": "workspace:*",
     "astro": "^6.4.4",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.9",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.1.0",
+    "@astrojs/check": "^0.9.10",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.11"
   },
   "engines": {
     "node": ">=22"
