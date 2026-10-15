@@ -49,6 +49,7 @@ jobs:
       - run: pnpm build:cli
 
       - name: Compile standalone binary
+        shell: bash  # same "$BUN_TARGET" syntax on the Windows runner
         env:
           BUN_TARGET: ${{ matrix.bun_target }}
         run: bun build packages/cli/dist/index.js --compile --target="$BUN_TARGET" --outfile tokx
