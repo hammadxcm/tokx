@@ -28,7 +28,7 @@
     "@changesets/cli": "^2.31.0",
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.2.3",
-    "@vitest/coverage-v8": "^4.1.8",
+    "@vitest/coverage-v8": "^4.1.12",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "typescript": "^6.0.3"
@@ -58,7 +58,8 @@
       "svgo@4": "^4.1.0",
       "browserslist@4": "^4.28.7",
       "smol-toml@1": "^1.7.1",
-      "devalue@5": "^5.9.3"
+      "devalue@5": "^5.9.3",
+      "yaml@2": "^2.8.3"
     }
   }
 }
