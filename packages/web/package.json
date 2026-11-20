@@ -15,9 +15,9 @@
   "dependencies": {
     "@astrojs/mdx": "^8.1.0",
     "@astrojs/react": "^7.1.0",
-    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/sitemap": "^3.7.6",
     "@tokx/core": "workspace:*",
-    "astro": "^7.4.0",
+    "astro": "^7.4.13",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
